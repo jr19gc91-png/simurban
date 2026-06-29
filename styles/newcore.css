@@ -1,0 +1,2374 @@
+:root{
+  --bg:rgba(18,24,22,.86); --bg2:rgba(31,42,38,.78); --line:rgba(255,255,255,.14);
+  --text:#f3f7f2; --muted:#b9c6bd; --accent:#8fd36b; --warn:#f2c66a; --danger:#ff7676;
+}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#d7ddd9;font-family:Inter,Segoe UI,Arial,sans-serif;touch-action:none;color:var(--text)}
+canvas{display:block;width:100%;height:100%}
+button,input{font-family:inherit}.topbar{position:fixed;left:50%;top:10px;transform:translateX(-50%);height:48px;display:flex;align-items:center;gap:8px;padding:0 12px;background:rgba(15,21,20,.70);border:1px solid var(--line);box-shadow:0 14px 40px rgba(0,0,0,.24);border-radius:16px;backdrop-filter:blur(14px);z-index:7;max-width:calc(100vw - 24px)}
+.brand{display:flex;flex-direction:column;margin-right:8px;white-space:nowrap}.brand strong{font-size:14px}.brand span{font-size:11px;color:var(--muted)}
+.hud-pill{height:32px;display:flex;align-items:center;gap:6px;padding:0 10px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.055);font-size:12px;white-space:nowrap}.hud-pill b{color:var(--muted);font-size:11px}.hud-pill span{font-weight:800;color:#fff}.mode-toggle{cursor:pointer;color:var(--text)}
+#ui{position:fixed;left:16px;top:70px;width:330px;max-height:calc(100vh - 148px);background:linear-gradient(180deg,var(--bg),rgba(12,16,15,.78));border:1px solid var(--line);box-shadow:0 18px 55px rgba(0,0,0,.32);border-radius:18px;backdrop-filter:blur(14px);z-index:5;overflow:hidden;user-select:none}
+#ui.collapsed{height:48px;width:270px}#ui.collapsed .body{display:none}.head{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 16px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.035)}
+.title{font-weight:800;letter-spacing:.2px;font-size:14px}.title span{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:1px}.iconbtn{width:32px;height:32px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);border-radius:10px;cursor:pointer;font-weight:800}.body{padding:12px 14px 14px;overflow:auto;max-height:calc(100vh - 188px);scrollbar-width:thin}
+.row{display:grid;grid-template-columns:1fr 58px;gap:9px;align-items:center;margin:9px 0}.row label{font-size:12px;color:#e6eee6;font-weight:700}.row output{font-size:12px;color:var(--warn);text-align:right;font-variant-numeric:tabular-nums}.row input[type=range]{grid-column:1/3;width:100%;accent-color:var(--accent)}
+.seedline{display:grid;grid-template-columns:1fr 94px;gap:8px;margin-bottom:10px}.seedline input{height:34px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.08);color:var(--text);padding:0 10px;font-weight:700;outline:none}.seedline button,.actions button,.start-city,.bottombar button,.zone-buttons button,.side-buttons button,.geometry-buttons button,.direction-buttons button,.lane-class-buttons button{height:34px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.08);color:var(--text);font-weight:800;cursor:pointer}.seedline button:hover,.actions button:hover,.iconbtn:hover,.sizebtn:hover,.bottombar button:hover,.start-city:hover,.zone-buttons button:hover,.side-buttons button:hover,.geometry-buttons button:hover,.direction-buttons button:hover,.lane-class-buttons button:hover{background:rgba(143,211,107,.17)}
+.mapsize{margin:10px 0 6px}.mapsize b{display:block;font-size:12px;color:#e6eee6;font-weight:700;margin-bottom:7px}.sizebuttons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.sizebtn{height:34px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.08);color:var(--text);font-weight:800;cursor:pointer}.sizebtn.active{background:linear-gradient(180deg,rgba(143,211,107,.34),rgba(73,126,58,.30));border-color:rgba(143,211,107,.45)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.actions button.primary{grid-column:1/3;background:linear-gradient(180deg,rgba(143,211,107,.32),rgba(73,126,58,.32));border-color:rgba(143,211,107,.45)}.start-city{width:100%;height:38px;margin-bottom:10px;background:linear-gradient(180deg,rgba(242,198,106,.28),rgba(132,88,35,.24));border-color:rgba(242,198,106,.42)}
+.switches{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.switches label{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.055);border:1px solid var(--line);border-radius:10px;padding:8px}.switches input{accent-color:var(--accent)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}.stat{background:rgba(255,255,255,.055);border:1px solid var(--line);border-radius:10px;padding:8px}.stat b{display:block;font-size:11px;color:var(--muted);font-weight:650}.stat span{display:block;margin-top:3px;font-size:15px;font-weight:850;color:#fff;font-variant-numeric:tabular-nums}.hint{font-size:11px;line-height:1.35;color:var(--muted);margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+.pill{position:fixed;right:16px;bottom:76px;background:rgba(18,24,22,.72);border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:12px;color:var(--muted);z-index:4;backdrop-filter:blur(10px)}
+.bottombar{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;max-width:calc(100vw - 24px);background:rgba(15,21,20,.76);border:1px solid var(--line);border-radius:17px;padding:9px;box-shadow:0 14px 42px rgba(0,0,0,.30);z-index:7;backdrop-filter:blur(14px);overflow:auto}.bottombar button{padding:0 12px;white-space:nowrap}.bottombar button:disabled{opacity:.45;cursor:not-allowed}.bottombar button.active,.zone-buttons button.active,.side-buttons button.active,.geometry-buttons button.active,.direction-buttons button.active,.lane-class-buttons button.active,.bottombar button.speed-active{background:linear-gradient(180deg,rgba(143,211,107,.34),rgba(73,126,58,.30));border-color:rgba(143,211,107,.45)}
+.tool-panel{position:fixed;right:16px;top:70px;width:260px;background:linear-gradient(180deg,var(--bg),rgba(12,16,15,.76));border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 55px rgba(0,0,0,.28);padding:12px;z-index:6;backdrop-filter:blur(14px);display:none}.city-mode .tool-panel{display:block}.panel-title{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:900;margin-bottom:8px}.zone-buttons{display:grid;grid-template-columns:1fr;gap:7px}.side-buttons{display:grid;grid-template-columns:1.2fr .9fr .9fr;gap:7px;margin-top:8px}.side-buttons button{font-size:12px}.geometry-buttons,.direction-buttons{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.geometry-buttons button,.direction-buttons button{font-size:12px;text-transform:uppercase;letter-spacing:.03em}.zone-buttons button[data-zone-type="residential"].active{background:rgba(63,164,90,.36)}.zone-buttons button[data-zone-type="commercial"].active{background:rgba(67,135,223,.36)}.zone-buttons button[data-zone-type="industrial"].active{background:rgba(209,156,54,.38)}.lane-control{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:var(--muted);font-weight:800}.lane-control input{flex:1;accent-color:var(--accent)}.lane-control span{color:#fff;min-width:18px;text-align:right}.tool-hint{margin-top:10px;font-size:11px;line-height:1.35;color:var(--muted);background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:10px;padding:8px}.tool-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.tool-stats div{background:rgba(255,255,255,.055);border:1px solid var(--line);border-radius:10px;padding:7px}.tool-stats b{display:block;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}.tool-stats span{display:block;margin-top:2px;font-weight:900;color:#fff}.inspector-text{margin-top:10px;border-top:1px solid var(--line);padding-top:10px;font-size:12px;color:#e7eee7;line-height:1.35;min-height:34px}
+.toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%) translateY(18px);opacity:0;pointer-events:none;background:rgba(15,21,20,.90);border:1px solid var(--line);border-radius:12px;padding:10px 14px;color:#fff;font-size:13px;font-weight:800;z-index:8;transition:.18s ease}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}.toast.error{border-color:rgba(255,118,118,.55);color:#ffd7d7}
+body.city-mode #ui{opacity:.36}body.city-mode #ui:hover{opacity:1}
+@media(max-width:1180px){.hud-pill:nth-of-type(n+5){display:none}.tool-panel{right:10px;width:230px}}
+@media(max-width:920px){.topbar{left:10px;right:10px;transform:none;overflow:auto}.hud-pill{display:none}.hud-pill:first-of-type{display:flex}#ui{left:10px;top:70px;width:calc(100vw - 20px)}.bottombar{left:10px;right:10px;transform:none;overflow:auto}.pill{display:none}.tool-panel{left:10px;right:10px;top:auto;bottom:82px;width:auto}}
+.transit-actions{display:grid;grid-template-columns:1fr;gap:7px;margin-top:10px}
+.transit-actions button{height:32px;border-radius:10px;border:1px solid var(--line);background:rgba(45,115,216,.16);color:var(--text);font-weight:850;cursor:pointer}
+.transit-actions button:hover{background:rgba(45,115,216,.26)}
+
+/* ===================== Transplante de interface (v2.2) ===================== */
+/* Tudo aqui é só UI — nenhum gráfico de mundo do jogo antigo. */
+
+/* --- Dock de painéis de dados (lado direito) --- */
+.tn-info-dock{position:fixed;right:286px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:7px;z-index:6}
+.tn-info-dock.hidden{display:none}
+.tn-info-tool{width:46px;height:46px;border-radius:13px;border:1px solid var(--line);background:rgba(15,21,20,.78);backdrop-filter:blur(12px);box-shadow:0 10px 30px rgba(0,0,0,.30);cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;transition:background .12s,transform .12s}
+.tn-info-tool:hover{background:rgba(143,211,107,.20);transform:translateX(-2px)}
+.tn-info-tool.active{background:linear-gradient(180deg,rgba(143,211,107,.36),rgba(73,126,58,.30));border-color:rgba(143,211,107,.5)}
+
+/* --- Painel de dados --- */
+.tn-info-panel{position:fixed;right:344px;top:70px;width:320px;max-height:calc(100vh - 150px);overflow:auto;background:linear-gradient(180deg,var(--bg),rgba(12,16,15,.84));border:1px solid var(--line);border-radius:16px;box-shadow:0 22px 60px rgba(0,0,0,.40);backdrop-filter:blur(14px);z-index:9;padding:0;font-size:13px}
+.tn-info-panel.hidden{display:none}
+.info-panel-header{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--line);background:rgba(20,28,25,.92);backdrop-filter:blur(8px);border-radius:16px 16px 0 0}
+.info-panel-header strong{font-size:14px}
+.info-close{width:26px;height:26px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);cursor:pointer;font-weight:800}
+.info-close:hover{background:rgba(255,118,118,.22)}
+.tn-info-panel>.info-tabs,.tn-info-panel>.info-tab-body,.tn-info-panel>.info-grid,.tn-info-panel>h4,.tn-info-panel>.bar-row,.tn-info-panel>.line-card,.tn-info-panel>.info-hint,.tn-info-panel>.mini-chart{margin-left:14px;margin-right:14px}
+.tn-info-panel h4{margin:13px 14px 7px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:10px 14px}
+.info-grid.small{grid-template-columns:1fr 1fr 1fr}
+.info-stat{background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:10px;padding:7px 9px}
+.info-stat span{display:block;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.info-stat strong{display:block;margin-top:2px;font-weight:900;color:#fff;font-size:14px}
+.bar-row{display:flex;align-items:center;gap:8px;margin:6px 14px;font-size:12px;color:var(--muted)}
+.bar-row>span{flex:0 0 116px}
+.bar-row .bar{flex:1;height:8px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden}
+.bar-row .bar i{display:block;height:100%;background:var(--accent);border-radius:6px}
+.bar-row>b{flex:0 0 38px;text-align:right;color:#fff}
+.info-hint{margin:9px 14px;font-size:11px;line-height:1.4;color:var(--muted);background:rgba(255,255,255,.045);border:1px solid var(--line);border-radius:10px;padding:8px}
+.info-tabs{display:flex;gap:6px;margin:11px 14px 4px;flex-wrap:wrap}
+.info-tab{padding:6px 10px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--muted);font-weight:800;font-size:11px;cursor:pointer}
+.info-tab.active{background:linear-gradient(180deg,rgba(143,211,107,.32),rgba(73,126,58,.26));border-color:rgba(143,211,107,.45);color:#fff}
+.info-tab-body{padding-bottom:10px}
+.line-card{margin:8px 14px;background:rgba(255,255,255,.045);border:1px solid var(--line);border-radius:11px;padding:9px 10px}
+.line-head{display:flex;align-items:center;gap:8px;font-size:13px}
+.line-sub{margin-left:auto;font-size:11px;color:var(--muted);font-weight:600}
+.fare-row{display:flex;align-items:center;gap:8px;margin-top:6px}
+.fare-row label{font-size:12px;color:var(--muted)}
+.fare-row input{flex:1;accent-color:var(--accent)}
+.fare-label{font-weight:800;color:#fff;min-width:64px;text-align:right;font-size:12px}
+.mini-chart{margin:8px 14px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;padding:8px 9px}
+.mini-chart-head{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);margin-bottom:4px}
+.mini-chart-head b{font-size:13px}
+.mini-chart svg{width:100%;height:54px;display:block}
+
+/* --- Minimapa base — posição final ajustada no bloco v2.3.0 --- */
+.tn-minimap{position:fixed;left:16px;bottom:74px;width:212px;background:linear-gradient(180deg,var(--bg),rgba(12,16,15,.84));border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.40);backdrop-filter:blur(14px);z-index:8;padding:8px}
+.tn-minimap.hidden{display:none}
+.tn-minimap-head{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:6px;padding:0 2px}
+.tn-minimap-head b{font-size:12px}
+.tn-minimap-head span{color:var(--muted);font-size:11px}
+.tn-minimap canvas{width:196px;height:196px;border-radius:9px;display:block;cursor:crosshair;image-rendering:auto}
+.tn-minimap-dock{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;margin-top:7px}
+.tn-minimap-dock button{height:28px;border-radius:8px;border:1px solid var(--line);background:rgba(143,211,107,.16);color:var(--text);font-weight:800;font-size:11px;cursor:pointer}
+.tn-minimap-dock button:hover{background:rgba(143,211,107,.28)}
+.tn-minimap-dock button.off{background:rgba(255,255,255,.05);color:var(--muted);opacity:.7}
+
+/* --- Painel do gestor de tráfego (TMPE) --- */
+.tmpe-panel{position:fixed;right:16px;top:70px;width:260px;background:linear-gradient(180deg,var(--bg),rgba(12,16,15,.82));border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 55px rgba(0,0,0,.30);padding:12px;z-index:8;backdrop-filter:blur(14px);display:none}
+.tmpe-panel.visible{display:block}
+.tmpe-mode-buttons{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.tmpe-mode-buttons button{height:34px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.08);color:var(--text);font-weight:800;cursor:pointer;font-size:12px}
+.tmpe-mode-buttons button.active{background:linear-gradient(180deg,rgba(143,211,107,.34),rgba(73,126,58,.30));border-color:rgba(143,211,107,.45)}
+.tmpe-legend{margin-top:10px;display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted)}
+.tmpe-legend div{display:flex;align-items:center;gap:8px}
+.tmpe-legend .lg{width:14px;height:14px;border-radius:4px;flex:0 0 14px}
+.lg-sig{background:#57c66a;box-shadow:0 0 0 2px rgba(230,193,74,.6) inset}
+.lg-stop{background:#c8362b}
+.lg-yield{background:#e05a3a}
+.tmpe-summary{margin-top:10px}
+.tmpe-clear{margin-top:10px;width:100%;height:32px;border-radius:10px;border:1px solid var(--line);background:rgba(255,118,118,.16);color:var(--text);font-weight:800;cursor:pointer}
+.tmpe-clear:hover{background:rgba(255,118,118,.28)}
+
+/* --- Botão e modal de atalhos --- */
+.tn-shortcuts-btn{position:fixed;right:16px;bottom:16px;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(15,21,20,.82);color:var(--text);font-weight:900;font-size:18px;cursor:pointer;z-index:10;box-shadow:0 10px 30px rgba(0,0,0,.34);backdrop-filter:blur(12px)}
+.tn-shortcuts-btn:hover{background:rgba(143,211,107,.22)}
+.tn-shortcuts-modal{position:fixed;inset:0;background:rgba(6,9,8,.55);backdrop-filter:blur(4px);z-index:20;display:flex;align-items:center;justify-content:center}
+.tn-shortcuts-modal.hidden{display:none}
+.tn-shortcuts-card{width:min(560px,92vw);max-height:84vh;overflow:auto;background:linear-gradient(180deg,var(--bg),rgba(12,16,15,.92));border:1px solid var(--line);border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.tn-shortcuts-card header{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);background:rgba(20,28,25,.95)}
+.tn-shortcuts-card header strong{font-size:16px}
+.tn-sc-close{width:28px;height:28px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);cursor:pointer;font-weight:800}
+.tn-shortcuts-body{padding:14px 18px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tn-sc-group h4{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
+.tn-sc-row{display:flex;align-items:center;gap:10px;margin-bottom:7px;font-size:12px;color:var(--muted)}
+.tn-sc-row kbd{flex:0 0 auto;min-width:34px;text-align:center;padding:3px 8px;border-radius:7px;border:1px solid var(--line);background:rgba(255,255,255,.08);color:#fff;font-weight:800;font-size:11px;font-family:inherit}
+
+/* --- Ajustes responsivos para a nova UI --- */
+@media(max-width:1240px){
+  .tn-info-dock{right:auto;left:16px;top:auto;bottom:300px;transform:none;flex-direction:row;flex-wrap:wrap;width:212px}
+  .tn-info-panel{right:auto;left:16px;bottom:74px;top:auto;width:300px;max-height:46vh}
+}
+@media(max-width:920px){
+  .tn-minimap,.tn-info-dock,.tn-info-panel,.tmpe-panel{display:none!important}
+}
+
+
+/* ===================== v2.3.0 Shell Merge — ajustes vindos do game-ui-shell v3.3 ===================== */
+/* Mantém renderer/sistemas reais da v2.2.2 e aplica apenas o melhor do shell: barras mais legíveis,
+   ferramentas com ícones, minimapa no lado direito sem esmagar o painel de construção e painéis de dados no lado esquerdo. */
+.topbar{
+  min-width:min(1120px,calc(100vw - 32px));
+  height:54px;
+  gap:10px;
+  padding:7px 12px;
+  border-radius:18px;
+  background:rgba(15,24,21,.78);
+}
+.brand{margin-right:4px;min-width:150px}.brand strong{font-size:13px}.brand span{font-size:10px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hud-pill{height:34px;background:rgba(255,255,255,.07);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.bottombar{
+  bottom:14px;
+  padding:8px;
+  gap:7px;
+  border-radius:18px;
+  background:rgba(15,24,21,.82);
+  scrollbar-width:thin;
+}
+.bottombar button{min-width:54px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.bottombar button[data-tool]{height:46px;min-width:70px;flex-direction:column;gap:2px;padding:4px 8px;line-height:1.05}
+.tool-ico{font-size:18px;line-height:1}.tool-label{font-size:11px;font-weight:850}.compact-action{height:34px}.danger-action{border-color:rgba(255,118,118,.28)!important}
+body.city-mode #ui{transform:translateX(calc(-100% + 44px));opacity:.32;transition:transform .18s ease,opacity .18s ease}
+body.city-mode #ui:hover{transform:translateX(0);opacity:1}
+body.city-mode .pill{display:none}
+.tn-info-dock{left:16px;right:auto;top:50%;transform:translateY(-50%)}
+.tn-info-tool:hover{transform:translateX(2px)}
+.tn-info-panel{left:74px;right:auto;top:70px;width:326px;max-height:calc(100vh - 154px)}
+.tn-minimap{left:auto;right:286px;bottom:74px;width:212px}
+.tn-shortcuts-btn{right:16px;bottom:16px}
+.tmpe-panel{z-index:9}
+@media(max-width:1320px){
+  .brand{display:none}.topbar{min-width:auto}.hud-pill:nth-of-type(n+8){display:none}.tn-minimap{right:16px;width:190px}.tn-minimap canvas{width:174px;height:174px}.tn-info-panel{width:300px}
+}
+@media(max-width:1180px){
+  .hud-pill:nth-of-type(n+6){display:none}.bottombar button[data-tool]{min-width:58px}.tool-label{display:none}.tool-ico{font-size:20px}.tn-info-dock{bottom:300px;top:auto;transform:none;flex-direction:row;flex-wrap:wrap;width:212px}.tn-info-panel{left:16px;bottom:74px;top:auto;max-height:46vh}.tn-minimap{display:none!important}
+}
+@media(max-width:920px){
+  body.city-mode #ui{transform:none;opacity:1}.topbar{left:10px;right:10px;transform:none;overflow:auto}.bottombar{left:10px;right:10px;transform:none}.bottombar button[data-tool]{height:38px}.tool-panel{left:10px;right:10px;top:auto;bottom:74px;width:auto}.tn-minimap,.tn-info-dock,.tn-info-panel,.tmpe-panel{display:none!important}
+}
+
+/* ===================== v2.3.2 — fluxo limpo: inicial / gerador / cidade ===================== */
+.start-screen{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 35% 25%,rgba(143,211,107,.18),transparent 34%),linear-gradient(180deg,rgba(6,12,10,.78),rgba(6,10,9,.94));backdrop-filter:blur(8px);padding:24px}
+.start-card{width:min(520px,92vw);border:1px solid rgba(255,255,255,.16);border-radius:24px;background:linear-gradient(180deg,rgba(17,27,24,.92),rgba(10,16,14,.86));box-shadow:0 30px 90px rgba(0,0,0,.55);padding:30px 32px;text-align:left}
+.start-kicker{font-size:12px;text-transform:uppercase;letter-spacing:.18em;color:var(--accent);font-weight:900;margin-bottom:8px}.start-card h1{font-size:52px;line-height:1;margin:0 0 12px}.start-card p{margin:0;color:var(--muted);font-size:15px;line-height:1.45}.start-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}.start-actions button{height:46px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.08);color:var(--text);font-weight:900;cursor:pointer}.start-actions button:hover{background:rgba(143,211,107,.18)}.start-actions .primary-start{background:linear-gradient(180deg,rgba(143,211,107,.36),rgba(73,126,58,.28));border-color:rgba(143,211,107,.52)}.start-meta{margin-top:14px;color:var(--muted);font-size:12px}
+body:not(.start-mode) .start-screen{display:none!important}
+body.start-mode .topbar,body.start-mode #ui,body.start-mode .tool-panel,body.start-mode .bottombar,body.start-mode .tn-info-dock,body.start-mode .tn-info-panel,body.start-mode .tn-minimap,body.start-mode .tmpe-panel,body.start-mode .tn-shortcuts-btn,body.start-mode .pill{display:none!important}
+body.generator-mode .tool-panel,body.generator-mode .bottombar,body.generator-mode .tn-info-dock,body.generator-mode .tn-info-panel,body.generator-mode .tn-minimap,body.generator-mode .tmpe-panel,body.generator-mode .tn-shortcuts-btn,body.generator-mode .pill{display:none!important}
+body.generator-mode #ui{display:block;opacity:1;transform:none;width:350px;z-index:9}
+body.city-mode #ui{display:none!important}
+body.city-mode .start-screen{display:none!important}
+body.city-mode .bottombar{display:flex}.city-mode .tool-panel{display:block}
+body.generator-mode .topbar{min-width:auto;width:auto;max-width:calc(100vw - 32px)}
+body.generator-mode .topbar .hud-pill:nth-of-type(n+4){display:none}
+body.generator-mode .brand{display:flex}
+body.generator-mode .brand span::after{content:' • Gerador isolado'}
+@media(max-width:720px){.start-actions{grid-template-columns:1fr}.start-card h1{font-size:40px}body.generator-mode #ui{left:10px;right:10px;width:auto}}
+
+/* ===================== v2.3.4 — UI antiga adaptada: submenu único por ferramenta ===================== */
+.tool-panel{
+  width:300px;
+  top:70px;
+  right:16px;
+  max-height:calc(100vh - 150px);
+  overflow:auto;
+  padding:0;
+}
+.tool-panel-head{
+  position:sticky;
+  top:0;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:12px 13px;
+  border-bottom:1px solid var(--line);
+  background:rgba(20,28,25,.92);
+  backdrop-filter:blur(8px);
+  border-radius:16px 16px 0 0;
+}
+.tool-panel-head .panel-title{margin:0;color:#dfeee1}
+.tool-panel-subtitle{margin-top:2px;font-size:11px;color:var(--muted);line-height:1.25}
+.tool-panel-close{width:28px;height:28px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);font-weight:900;cursor:pointer;flex:0 0 auto}
+.tool-panel-close:hover{background:rgba(255,118,118,.20)}
+.tool-section{display:none;padding:12px 13px 0}
+.tool-section.active{display:block}
+.tool-section-title{font-size:13px;font-weight:950;letter-spacing:.03em;text-transform:uppercase;color:var(--accent);margin-bottom:9px}
+.tool-empty-icon{font-size:32px;margin-bottom:8px}.tool-section[data-tool-section="none"] b{display:block;font-size:14px}.tool-section[data-tool-section="none"] p{margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.42}
+.lane-class-panel{margin-top:10px}.lane-class-panel>b{display:block;font-size:12px;color:#fff;margin-bottom:7px}.lane-class-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.lane-class-buttons button{font-size:11px;padding:0 6px}
+.tool-mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.tool-mini-stats div{background:rgba(255,255,255,.055);border:1px solid var(--line);border-radius:10px;padding:7px}.tool-mini-stats b{display:block;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}.tool-mini-stats span{display:block;margin-top:2px;font-weight:900;color:#fff}
+.danger-hint{border-color:rgba(255,118,118,.28);background:rgba(255,118,118,.08);color:#ffdede}
+.inspector-text{margin:12px 13px 13px;border-top:1px solid var(--line);padding-top:10px}
+.city-mode .tool-panel{display:block}.city-mode .tool-panel[data-active-tool="tmpe"]{z-index:9}
+.tn-minimap{right:332px}
+@media(max-width:1320px){.tn-minimap{right:16px}.tool-panel{width:282px}}
+@media(max-width:1180px){.tool-panel{right:10px;width:250px}.lane-class-buttons{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:920px){.tool-panel{left:10px;right:10px;top:auto;bottom:74px;width:auto;max-height:44vh}.tool-section{padding:10px 12px 0}.tool-mini-stats{grid-template-columns:repeat(2,1fr)}}
+
+
+/* ===================== v2.3.5/v2.3.6 — refino visual geral ===================== */
+:root{
+  --bg:rgba(11,17,16,.88);
+  --bg2:rgba(22,33,30,.78);
+  --line:rgba(225,238,226,.105);
+  --text:#edf4ed;
+  --muted:#9fb0a8;
+  --accent:#87c85f;
+  --accent2:#55a5d8;
+  --panelShadow:0 24px 70px rgba(0,0,0,.38);
+}
+body.city-mode::before,body.generator-mode::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1;
+  background:radial-gradient(circle at 50% 42%,transparent 44%,rgba(0,0,0,.20) 100%),linear-gradient(180deg,rgba(255,245,220,.035),rgba(0,0,0,.06));
+  mix-blend-mode:multiply;
+}
+.topbar,.bottombar,.tool-panel,.tn-info-panel,.tn-minimap,#ui{
+  border-color:rgba(219,235,222,.105)!important;
+  box-shadow:var(--panelShadow),inset 0 1px 0 rgba(255,255,255,.055);
+}
+.topbar{
+  height:52px;
+  background:linear-gradient(180deg,rgba(18,28,26,.82),rgba(8,14,13,.72));
+  border-radius:20px;
+  padding:6px 12px;
+}
+.brand strong{letter-spacing:.02em}.brand span{color:#91a199}
+.hud-pill{
+  height:32px;
+  background:linear-gradient(180deg,rgba(255,255,255,.072),rgba(255,255,255,.035));
+  border-color:rgba(255,255,255,.10);
+  color:#eaf1e8;
+}
+.hud-pill b{color:#99aaa1}.hud-pill span{font-weight:900;color:#f7fbf4;text-shadow:0 1px 0 rgba(0,0,0,.22)}
+.bottombar{
+  bottom:13px;
+  background:linear-gradient(180deg,rgba(14,24,22,.88),rgba(6,13,13,.84));
+  padding:7px 9px;
+}
+.bottombar button,.zone-buttons button,.side-buttons button,.geometry-buttons button,.direction-buttons button,.lane-class-buttons button,.transit-actions button,.seedline button,.actions button,.start-actions button,.compact-action{
+  background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.038));
+  border-color:rgba(255,255,255,.105);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 6px 16px rgba(0,0,0,.12);
+  transition:transform .12s ease,background .12s ease,border-color .12s ease,box-shadow .12s ease;
+}
+.bottombar button:hover,.zone-buttons button:hover,.side-buttons button:hover,.geometry-buttons button:hover,.direction-buttons button:hover,.lane-class-buttons button:hover,.transit-actions button:hover,.seedline button:hover,.actions button:hover,.start-actions button:hover,.compact-action:hover{
+  transform:translateY(-1px);
+  background:linear-gradient(180deg,rgba(135,200,95,.22),rgba(81,130,66,.14));
+  border-color:rgba(135,200,95,.38);
+}
+.bottombar button.active,.bottombar button.speed-active,.zone-buttons button.active,.side-buttons button.active,.geometry-buttons button.active,.direction-buttons button.active,.lane-class-buttons button.active{
+  background:linear-gradient(180deg,rgba(135,200,95,.42),rgba(57,103,50,.28));
+  border-color:rgba(153,220,105,.55);
+  box-shadow:0 0 0 1px rgba(135,200,95,.10),0 10px 24px rgba(68,136,70,.18),inset 0 1px 0 rgba(255,255,255,.12);
+}
+.tool-panel{
+  background:linear-gradient(180deg,rgba(14,22,20,.92),rgba(7,12,12,.86));
+  border-radius:18px;
+  width:306px;
+}
+.tool-panel-head{
+  background:linear-gradient(180deg,rgba(25,37,33,.96),rgba(13,22,20,.92));
+  border-radius:18px 18px 0 0;
+  padding:13px 14px;
+}
+.tool-panel-head .panel-title{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:#eaf7ea}.tool-panel-subtitle{color:#8fa29a}
+.tool-section{padding:13px 14px 0}.tool-section-title{color:#9dda78;text-shadow:0 0 18px rgba(125,205,99,.18)}
+.tool-hint,.tool-mini-stats div,.tool-stats div,.stat,.switches label{
+  background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025));
+  border-color:rgba(255,255,255,.09);
+}
+.tool-hint{color:#aab8b1}.tool-mini-stats span,.tool-stats span,.stat span{color:#f4f9f2}
+.lane-control input,.row input[type=range]{accent-color:#87c85f}.lane-control{color:#aebbb4}.lane-control span{font-weight:950}
+.tn-info-dock{gap:8px}.tn-info-tool{
+  width:44px;height:44px;border-radius:14px;
+  background:linear-gradient(180deg,rgba(14,24,22,.86),rgba(6,12,12,.78));
+  border-color:rgba(255,255,255,.10);
+}
+.tn-info-tool.active{box-shadow:0 0 0 1px rgba(135,200,95,.18),0 12px 26px rgba(35,88,48,.24)}
+.tn-info-panel,.tn-minimap{
+  background:linear-gradient(180deg,rgba(14,23,21,.90),rgba(8,13,13,.84));
+  border-radius:18px;
+}
+.tn-minimap canvas{border-radius:12px;filter:saturate(.92) contrast(.96) brightness(.94)}
+.start-screen{
+  background:radial-gradient(circle at 32% 22%,rgba(123,200,93,.20),transparent 34%),radial-gradient(circle at 70% 65%,rgba(70,150,210,.12),transparent 36%),linear-gradient(180deg,rgba(5,10,9,.84),rgba(3,7,7,.96));
+}
+.start-card{
+  background:linear-gradient(180deg,rgba(20,31,28,.94),rgba(8,13,13,.90));
+  box-shadow:0 32px 100px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.07);
+}
+.start-card h1{letter-spacing:-.045em}.start-kicker{color:#9fe072}.start-actions .primary-start{background:linear-gradient(180deg,rgba(143,211,107,.42),rgba(63,115,54,.30))}
+body.generator-mode #ui{
+  background:linear-gradient(180deg,rgba(13,22,20,.92),rgba(7,12,12,.88));
+  border-radius:20px;
+}
+.toast{background:rgba(10,16,15,.93);box-shadow:0 16px 44px rgba(0,0,0,.34)}
+.inspector-text{color:#dce7df}
+.danger-action:hover,.danger-hint{border-color:rgba(255,118,118,.34)!important;background:rgba(255,118,118,.09)!important}
+@media(max-width:1320px){.tool-panel{width:286px}.tn-minimap{right:16px}}
+@media(max-width:920px){body.city-mode::before,body.generator-mode::before{display:none}.tool-panel{max-height:45vh}}
+
+/* ===================== v2.3.6 Visual Premium Polish ===================== */
+:root{
+  --bg:rgba(12,17,16,.84);
+  --bg2:rgba(23,31,28,.76);
+  --line:rgba(225,235,222,.105);
+  --text:#eff5ed;
+  --muted:#aebcaf;
+  --accent:#80c864;
+  --warn:#dfb45b;
+  --danger:#e76d6d;
+  --panel-glow:rgba(128,200,100,.09);
+}
+html,body{background:#cdd4cf;color:var(--text);font-synthesis-weight:none;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+canvas{filter:saturate(.94) contrast(1.025)}
+.topbar{
+  height:46px;
+  padding:0 13px;
+  gap:7px;
+  background:linear-gradient(180deg,rgba(14,20,19,.78),rgba(8,12,12,.66));
+  border-color:rgba(232,238,226,.11);
+  box-shadow:0 16px 44px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.08);
+  border-radius:18px;
+}
+.brand strong{font-size:13px;letter-spacing:.04em;text-transform:uppercase}.brand span{font-size:10px;opacity:.82}.hud-pill{height:30px;padding:0 9px;background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.09);box-shadow:inset 0 1px 0 rgba(255,255,255,.045)}.hud-pill b{font-size:10px;letter-spacing:.045em;text-transform:uppercase}.hud-pill span{font-size:12px;color:#f7fbf4}.bottombar{bottom:12px;padding:8px;gap:7px;background:linear-gradient(180deg,rgba(13,18,17,.80),rgba(8,11,11,.70));border-color:rgba(235,240,230,.12);box-shadow:0 16px 46px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.07)}.bottombar button,.seedline button,.actions button,.start-city,.zone-buttons button,.side-buttons button,.geometry-buttons button,.direction-buttons button,.lane-class-buttons button,.transit-actions button,.tmpe-clear{height:33px;border-radius:11px;border-color:rgba(255,255,255,.10);background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035));box-shadow:inset 0 1px 0 rgba(255,255,255,.055);transition:background .12s ease,border-color .12s ease,transform .12s ease,box-shadow .12s ease}.bottombar button:hover,.seedline button:hover,.actions button:hover,.start-city:hover,.zone-buttons button:hover,.side-buttons button:hover,.geometry-buttons button:hover,.direction-buttons button:hover,.lane-class-buttons button:hover,.transit-actions button:hover,.tmpe-clear:hover{background:linear-gradient(180deg,rgba(128,200,100,.20),rgba(80,128,62,.12));border-color:rgba(128,200,100,.24);transform:translateY(-1px)}.bottombar button.active,.zone-buttons button.active,.side-buttons button.active,.geometry-buttons button.active,.direction-buttons button.active,.lane-class-buttons button.active,.bottombar button.speed-active{background:linear-gradient(180deg,rgba(128,200,100,.31),rgba(58,103,49,.24));border-color:rgba(128,200,100,.42);box-shadow:0 0 0 1px rgba(128,200,100,.10),0 8px 22px rgba(50,95,42,.18),inset 0 1px 0 rgba(255,255,255,.08)}#ui,.tool-panel,.tn-info-panel,.newcore-minimap{background:linear-gradient(180deg,rgba(15,21,20,.82),rgba(9,13,13,.73));border-color:rgba(230,238,226,.105);box-shadow:0 20px 60px rgba(0,0,0,.33),inset 0 1px 0 rgba(255,255,255,.065);backdrop-filter:blur(18px) saturate(1.08)}#ui{border-radius:19px}.head{background:linear-gradient(180deg,rgba(255,255,255,.052),rgba(255,255,255,.018));height:49px}.title{letter-spacing:.035em}.title span{opacity:.78}.body{padding:13px 14px 15px}.row{margin:8px 0}.row label,.mapsize b{font-size:11px;letter-spacing:.02em;text-transform:uppercase;color:#dfe9de}.row output{color:#d6b46d}.row input[type=range],.lane-control input{accent-color:#78bd5f}.seedline input{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.10);box-shadow:inset 0 1px 2px rgba(0,0,0,.24)}.stat,.tool-mini-stats div,.tool-stats div,.switches label,.tool-hint,.tmpe-legend,.lane-class-panel{background:linear-gradient(180deg,rgba(255,255,255,.052),rgba(255,255,255,.026));border-color:rgba(255,255,255,.085);box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}.tool-panel{width:274px;padding:13px;border-radius:18px}.tool-panel-head{padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.075)}.panel-title,.tool-section-title{font-size:11px;letter-spacing:.105em;text-transform:uppercase;color:#cfdccd}.tool-panel-subtitle{font-size:11px;color:#a8b7aa;line-height:1.25}.tool-panel-close,.iconbtn{background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.055)}.tool-panel-close:hover,.iconbtn:hover{background:rgba(231,109,109,.18);border-color:rgba(231,109,109,.30)}.lane-class-buttons{gap:6px}.lane-class-buttons button{font-size:11px;padding:0 7px}.tool-hint{font-size:11px;color:#aebcaf}.danger-hint{border-color:rgba(231,109,109,.22);background:rgba(231,109,109,.09)}.start-screen{background:radial-gradient(circle at 28% 22%,rgba(128,200,100,.18),transparent 34%),radial-gradient(circle at 70% 78%,rgba(223,180,91,.12),transparent 38%),linear-gradient(145deg,#141b19,#0a0f0f 62%,#121816)}.start-card{background:linear-gradient(180deg,rgba(24,32,29,.82),rgba(11,16,15,.78));border:1px solid rgba(235,240,230,.12);box-shadow:0 30px 90px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(20px) saturate(1.08)}.start-kicker{color:#9ad17b;letter-spacing:.18em}.start-card h1{letter-spacing:-.045em;text-shadow:0 18px 52px rgba(128,200,100,.12)}.primary-start{background:linear-gradient(180deg,rgba(128,200,100,.36),rgba(68,113,54,.26));border-color:rgba(128,200,100,.38)}.newcore-minimap canvas{border-radius:12px;filter:saturate(.92) contrast(1.02)}.tn-info-tool{background:linear-gradient(180deg,rgba(15,21,20,.82),rgba(8,12,12,.72));border-color:rgba(255,255,255,.10);box-shadow:0 12px 34px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.055)}.tn-info-tool.active{background:linear-gradient(180deg,rgba(128,200,100,.28),rgba(58,103,49,.20));border-color:rgba(128,200,100,.35)}.toast{background:rgba(10,14,14,.92);border-color:rgba(235,240,230,.12);box-shadow:0 16px 44px rgba(0,0,0,.38)}.pill{background:rgba(13,18,17,.66);border-color:rgba(255,255,255,.09);box-shadow:0 12px 32px rgba(0,0,0,.24)}body.city-mode #ui{opacity:.30;filter:saturate(.85)}body.city-mode #ui:hover{opacity:1;filter:none}@media(max-width:1366px){.topbar{height:44px;gap:6px}.hud-pill{padding:0 7px}.hud-pill:nth-of-type(n+7){display:none}.tool-panel{width:256px}.tn-info-dock{right:276px}.bottombar button{padding:0 10px;font-size:12px}}@media(max-height:780px){.tool-panel{top:62px;max-height:calc(100vh - 142px);overflow:auto}.bottombar{bottom:8px}.pill{bottom:66px}.topbar{top:8px}#ui{top:62px;max-height:calc(100vh - 134px)}}
+
+.road-type-buttons,.rail-type-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 10px}
+.road-type-buttons button,.rail-type-buttons button{border:1px solid rgba(255,255,255,.14);background:linear-gradient(180deg,rgba(48,62,56,.94),rgba(24,32,30,.94));color:#edf6ef;border-radius:10px;padding:9px 10px;font-weight:800;text-transform:uppercase;font-size:12px;cursor:pointer}
+.road-type-buttons button.active,.rail-type-buttons button.active{background:linear-gradient(180deg,rgba(44,93,55,.98),rgba(34,70,43,.98));border-color:rgba(132,216,120,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 0 0 1px rgba(103,204,116,.18)}
+
+
+
+/* ===================== v2.3.8 — fluxo clássico antigo: Novo Jogo / Gerador / Cidade ===================== */
+body.start-mode #topbar,
+body.start-mode #ui,
+body.start-mode #toolPanel,
+body.start-mode #bottombar,
+body.start-mode .tn-info-dock,
+body.start-mode .tn-info-panel,
+body.start-mode .tn-minimap,
+body.start-mode .pill,
+body.start-mode .classic-menu{display:none!important}
+
+body.generator-mode #startScreen,
+body.generator-mode #topbar,
+body.generator-mode #toolPanel,
+body.generator-mode #bottombar,
+body.generator-mode .tn-info-dock,
+body.generator-mode .tn-info-panel,
+body.generator-mode .tn-minimap,
+body.generator-mode .pill,
+body.generator-mode .classic-menu{display:none!important}
+
+body.city-mode #startScreen,
+body.city-mode #ui{display:none!important}
+
+.classic-start-card{max-width:620px}
+.classic-start-card h1{letter-spacing:-.04em}
+.classic-start-actions{grid-template-columns:1.2fr 1fr 1fr}
+.start-menu-hint{
+  margin:14px 0 4px;
+  padding:12px 14px;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:14px;
+  background:rgba(255,255,255,.055);
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.42;
+}
+.start-menu-hint b{color:#eef7f1}
+
+/* Topbar mais próxima do shell antigo */
+.topbar{
+  top:12px;
+  height:54px;
+  min-width:min(1120px,calc(100vw - 32px));
+  padding:8px 12px;
+  gap:10px;
+  border-radius:16px;
+  background:rgba(13,28,25,.84);
+  box-shadow:0 16px 42px rgba(0,0,0,.34);
+}
+.hamb{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.075);
+  color:#eef7f1;
+  font-weight:900;
+  font-size:17px;
+  cursor:pointer;
+}
+.hamb:hover{background:rgba(143,211,107,.18)}
+.mapName{min-width:210px}
+.hud-pill{height:34px;background:rgba(255,255,255,.06)}
+.classic-menu{
+  position:fixed;
+  top:74px;
+  left:calc(50% - min(560px,calc(50vw - 16px)));
+  z-index:20;
+  display:grid;
+  gap:7px;
+  padding:10px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:rgba(13,28,25,.94);
+  box-shadow:0 16px 44px rgba(0,0,0,.35);
+  backdrop-filter:blur(12px);
+}
+.classic-menu.hidden{display:none!important}
+.classic-menu button{
+  min-width:160px;
+  height:36px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:rgba(255,255,255,.075);
+  color:var(--text);
+  font-weight:800;
+  text-align:left;
+  padding:0 12px;
+  cursor:pointer;
+}
+.classic-menu button:hover{background:rgba(143,211,107,.17)}
+
+/* Barra inferior em categorias, como o modelo antigo */
+.classic-bottombar{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:10px;
+  min-width:min(1160px,calc(100vw - 28px));
+  padding:10px;
+  border-radius:18px;
+}
+.speed-cluster,.tool-cluster,.save-cluster{display:flex;align-items:center;gap:8px}
+.tool-cluster{justify-content:center}
+.classic-bottombar .tool-cluster button{
+  width:86px;
+  height:62px;
+  display:grid;
+  place-items:center;
+  gap:2px;
+  padding:6px;
+}
+.classic-bottombar .tool-ico{font-size:22px;line-height:1}
+.classic-bottombar .tool-label{font-size:11px;line-height:1;font-weight:800}
+.classic-bottombar .compact-action{height:36px;min-width:42px;padding:0 12px}
+.save-cluster .compact-action{min-width:72px}
+
+/* Painel direito com cara de submenu único antigo */
+.tool-panel{
+  top:82px;
+  right:18px;
+  width:318px;
+  border-radius:18px;
+  background:rgba(13,28,25,.86);
+  box-shadow:0 16px 44px rgba(0,0,0,.34);
+}
+.tool-panel-head{background:rgba(11,22,20,.94)}
+.classic-subtitle{
+  margin:-2px 0 10px;
+  font-size:11px;
+  line-height:1.35;
+  color:var(--muted);
+}
+.preset-buttons,.tool-choice-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  margin:8px 0 10px;
+}
+.preset-buttons button,.tool-choice-grid button{
+  min-height:34px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:rgba(255,255,255,.08);
+  color:var(--text);
+  font-weight:850;
+  cursor:pointer;
+  font-size:12px;
+}
+.preset-buttons button:hover,.tool-choice-grid button:hover{background:rgba(143,211,107,.17)}
+.road-type-buttons,.rail-type-buttons{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+.road-type-buttons button,.rail-type-buttons button{
+  height:34px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.08);
+  color:var(--text);
+  font-weight:900;
+  cursor:pointer;
+  text-transform:uppercase;
+  font-size:12px;
+}
+.road-type-buttons button.active,.rail-type-buttons button.active{
+  background:linear-gradient(180deg,rgba(143,211,107,.34),rgba(73,126,58,.30));
+  border-color:rgba(143,211,107,.45);
+}
+
+/* No modo cidade: dock antigo de relatórios fica à esquerda e minimapa à direita. */
+body.city-mode .tn-info-dock{
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+}
+body.city-mode .tn-minimap{
+  right:18px;
+  bottom:96px;
+}
+body.city-mode .pill{display:none!important}
+
+@media(max-width:1180px){
+  .hud-pill:nth-of-type(n+7){display:none}
+  .classic-bottombar{grid-template-columns:1fr;max-height:188px;overflow:auto}
+  .speed-cluster,.tool-cluster,.save-cluster{justify-content:center;flex-wrap:wrap}
+}
+@media(max-width:760px){
+  .classic-start-actions{grid-template-columns:1fr}
+  .topbar{left:10px;right:10px;transform:none;min-width:0}
+  .tool-panel{right:10px;width:min(318px,calc(100vw - 20px))}
+}
+
+
+
+/* Painel esquerdo clássico fixo */
+.classic-left-panel{
+  position:fixed;
+  left:16px;
+  top:82px;
+  width:286px;
+  max-height:calc(100vh - 190px);
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(13,28,25,.82);
+  box-shadow:0 16px 44px rgba(0,0,0,.30);
+  backdrop-filter:blur(14px);
+  overflow:hidden;
+  z-index:6;
+  display:none;
+}
+body.city-mode .classic-left-panel{display:block}
+body.start-mode .classic-left-panel,
+body.generator-mode .classic-left-panel{display:none!important}
+.classic-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px;border-bottom:1px solid var(--line);background:rgba(9,18,16,.74)}
+.classic-tabs button{
+  height:32px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:rgba(255,255,255,.07);
+  color:var(--text);
+  font-weight:850;
+  font-size:11px;
+  cursor:pointer;
+}
+.classic-tabs button.active{background:rgba(143,211,107,.24);border-color:rgba(143,211,107,.42)}
+.classic-panel-body{padding:13px}
+.classic-panel-body h2{
+  margin:0 0 10px;
+  font-size:13px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#aee8bd;
+}
+.classic-cards{display:grid;gap:8px}
+.classic-cards article{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 11px;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:12px;
+  background:rgba(255,255,255,.06);
+}
+.classic-cards span{font-size:12px;color:var(--muted)}
+.classic-cards b{font-size:13px;color:#fff;font-variant-numeric:tabular-nums}
+body.city-mode .tn-info-dock{display:none!important}
+
+.quick-buttons { display:flex; flex-wrap:wrap; gap:6px; margin:7px 0 9px; }
+.quick-buttons button, .rail-mode-buttons button { min-width:42px; }
+.rail-mode-buttons { display:flex; gap:6px; flex-wrap:wrap; margin:7px 0 9px; }
+
+
+/* v2.3.12 - interface/ferramentas clássicas sem alterar o visual moderno do ambiente */
+.classic-tool-section .classic-subtitle{font-size:11px;color:var(--muted);line-height:1.35;margin:-2px 0 10px}
+.classic-tool-group{border:1px solid rgba(255,255,255,.075);background:rgba(255,255,255,.035);border-radius:12px;padding:9px;margin:8px 0}
+.classic-tool-group>label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:#b7c3b6;font-weight:900;margin-bottom:7px}
+.classic-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.rail-system-presets{grid-template-columns:1fr 1fr 1fr}.classic-choice-grid button,.classic-stepper button,.classic-two-buttons button{min-height:33px;border-radius:10px;border:1px solid rgba(255,255,255,.10);background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035));color:var(--text);font-weight:900;cursor:pointer}.classic-choice-grid button:hover,.classic-stepper button:hover,.classic-two-buttons button:hover{background:rgba(143,211,107,.17)}.classic-choice-grid button.active,.classic-stepper button.active,.classic-two-buttons button.active{background:linear-gradient(180deg,rgba(143,211,107,.34),rgba(73,126,58,.28));border-color:rgba(143,211,107,.48)}
+.classic-stepper{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.speed-quick-buttons{grid-template-columns:repeat(4,1fr)}.speed-quick-buttons button:nth-child(n+5){grid-column:span 1}.rail-speed-buttons{grid-template-columns:repeat(5,1fr)}
+.hidden-control{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}.classic-current{display:block;margin-top:7px;font-size:11px;color:var(--muted)}.classic-current b{color:#fff}.classic-level-readout{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:10px 0 0;border:1px solid rgba(242,198,106,.18);background:rgba(242,198,106,.07);border-radius:11px;padding:8px 9px;font-size:12px;color:#f5ead1;font-weight:800}.classic-level-readout span{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#b8ad95}.compact-classes{grid-template-columns:repeat(3,1fr)}.optional-advanced{opacity:.92}.tool-panel[data-active-tool="road"],.tool-panel[data-active-tool="rail"]{width:292px}.road-type-buttons,.direction-buttons{display:none!important}
+body.city-mode #ui{opacity:.22;filter:saturate(.85)}body.city-mode #ui:hover{opacity:.95;filter:none}
+
+
+/* v2.3.13 - polimento runtime das ferramentas clássicas */
+.classic-muted-note { opacity: .86; border-style: dashed; }
+.classic-muted-note .tool-hint { margin-top: 0; font-size: 12px; }
+.classic-tool-section .classic-level-readout { background: rgba(0,0,0,.18); border: 1px solid rgba(255,255,255,.09); }
+.tool-section[data-tool-section="road"] .road-main-presets button.active,
+.tool-section[data-tool-section="rail"] .rail-main-presets button.active,
+.tool-section[data-tool-section="rail"] .rail-system-presets button.active { box-shadow: inset 0 -2px 0 rgba(255,255,255,.42); }
+
+
+.tmpe-class-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.tmpe-class-grid button[data-tmpe-class="bus"].active { box-shadow: inset 0 0 0 2px rgba(210,64,54,.85); }
+.tmpe-class-grid button[data-tmpe-class="bike"].active { box-shadow: inset 0 0 0 2px rgba(65,150,84,.85); }
+.tmpe-class-grid button[data-tmpe-class="parking"].active { box-shadow: inset 0 0 0 2px rgba(160,170,180,.85); }
+.tmpe-class-selector .classic-label { margin-top: 8px; }
+
+
+/* ===================== v2.3.16 — retorno visual à UI clássica: sem painel à direita ===================== */
+/* Regra desta rodada: ambiente moderno preservado; interface de jogo volta ao modelo antigo:
+   topbar + barra lateral esquerda + barra inferior. Nada fixo no lado direito. */
+body.city-mode .tool-panel{
+  left:318px!important;
+  right:auto!important;
+  top:82px!important;
+  width:318px!important;
+  max-height:calc(100vh - 190px)!important;
+  overflow:auto!important;
+  border-radius:18px!important;
+  background:rgba(13,28,25,.88)!important;
+}
+body.city-mode .classic-left-panel{
+  left:16px!important;
+  right:auto!important;
+  top:82px!important;
+  width:286px!important;
+  max-height:calc(100vh - 190px)!important;
+}
+/* Painéis/docks modernos de informação e minimapa saem do lado direito para não quebrar o fluxo antigo. */
+body.city-mode .tn-info-dock,
+body.city-mode .tn-info-panel,
+body.city-mode .tmpe-panel,
+body.city-mode .tn-minimap,
+body.city-mode .pill{
+  display:none!important;
+}
+body.city-mode .tn-shortcuts-btn{
+  left:16px!important;
+  right:auto!important;
+  bottom:86px!important;
+}
+.classic-left-panel,.tool-panel{
+  box-shadow:0 16px 42px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+.classic-panel-body,.tool-section{
+  font-size:12px;
+}
+.classic-tabs button,.classic-choice-grid button,.classic-stepper button,.classic-two-buttons button,.tmpe-class-grid button{
+  min-height:31px;
+}
+.tool-panel-head{
+  position:sticky;
+  top:0;
+  z-index:2;
+  border-radius:14px 14px 0 0;
+}
+/* Evita qualquer sobra de posicionamento antigo à direita em resoluções médias. */
+@media(max-width:1320px){
+  body.city-mode .tool-panel{left:312px!important;right:auto!important;width:300px!important}
+  body.city-mode .classic-left-panel{left:14px!important;width:282px!important}
+}
+@media(max-width:920px){
+  body.city-mode .tool-panel{left:10px!important;right:10px!important;top:auto!important;bottom:74px!important;width:auto!important;max-height:42vh!important}
+  body.city-mode .classic-left-panel{display:none!important}
+}
+
+
+/* ===================== v2.3.17 — arquitetura correta da UI clássica =====================
+   Topbar = status/dados. Lateral esquerda = dashboards. Barra inferior = ferramentas.
+   Submenus das ferramentas ficam acoplados acima da barra inferior. Lado direito fica vazio. */
+body.city-mode .tool-panel{
+  left:50%!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:78px!important;
+  transform:translateX(-50%)!important;
+  width:min(820px, calc(100vw - 360px))!important;
+  max-height:248px!important;
+  overflow:auto!important;
+  border-radius:18px!important;
+  padding:10px 12px!important;
+  background:linear-gradient(180deg,rgba(13,26,24,.92),rgba(8,14,13,.88))!important;
+  box-shadow:0 18px 46px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.07)!important;
+}
+body.city-mode .tool-panel[data-active-tool="none"]{
+  display:none!important;
+}
+body.city-mode .classic-left-panel{
+  left:16px!important;
+  right:auto!important;
+  top:82px!important;
+  width:286px!important;
+  max-height:calc(100vh - 190px)!important;
+  transform:none!important;
+}
+body.city-mode .tool-panel-head{
+  position:sticky!important;
+  top:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  background:linear-gradient(180deg,rgba(13,26,24,.98),rgba(13,26,24,.90))!important;
+  border-bottom:1px solid rgba(255,255,255,.08)!important;
+  border-radius:12px!important;
+  padding:8px 9px!important;
+  margin:0 0 8px!important;
+  z-index:4!important;
+}
+body.city-mode .tool-section{
+  padding:0!important;
+}
+body.city-mode .tool-section.active{
+  display:block!important;
+}
+body.city-mode .tool-section-title{
+  display:none!important;
+}
+body.city-mode .classic-tool-group,
+body.city-mode .lane-class-panel,
+body.city-mode .tmpe-legend,
+body.city-mode .tool-mini-stats,
+body.city-mode .tool-stats,
+body.city-mode .tool-hint{
+  margin-top:7px!important;
+  margin-bottom:0!important;
+}
+body.city-mode .tool-panel .classic-tool-section.active,
+body.city-mode .tool-section[data-tool-section="zone"].active,
+body.city-mode .tool-section[data-tool-section="transport"].active,
+body.city-mode .tool-section[data-tool-section="upgrade"].active,
+body.city-mode .tool-section[data-tool-section="tmpe"].active{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(120px,1fr))!important;
+  gap:8px!important;
+  align-items:start!important;
+}
+body.city-mode .tool-panel .classic-subtitle,
+body.city-mode .tool-panel .tool-hint{
+  grid-column:1 / -1!important;
+}
+body.city-mode .tool-panel .tool-mini-stats,
+body.city-mode .tool-panel .tool-stats,
+body.city-mode .tmpe-summary{
+  grid-column:span 2!important;
+}
+body.city-mode .tool-panel .classic-choice-grid,
+body.city-mode .tool-panel .classic-stepper,
+body.city-mode .tool-panel .classic-two-buttons,
+body.city-mode .tool-panel .tmpe-lane-grid,
+body.city-mode .tool-panel .tmpe-class-grid,
+body.city-mode .tool-panel .lane-class-buttons{
+  gap:6px!important;
+}
+body.city-mode .tool-panel .classic-tool-group{padding:8px!important;}
+body.city-mode .tool-panel button{min-height:30px!important;}
+body.city-mode .tool-panel input[type="range"]{max-height:18px!important;}
+body.city-mode .tn-info-dock,
+body.city-mode .tn-info-panel,
+body.city-mode .tmpe-panel,
+body.city-mode .tn-minimap,
+body.city-mode .pill{
+  display:none!important;
+}
+body.city-mode .tn-shortcuts-btn{
+  left:16px!important;
+  right:auto!important;
+  bottom:86px!important;
+}
+body.city-mode .bottombar{
+  z-index:8!important;
+}
+@media(max-width:1180px){
+  body.city-mode .tool-panel{
+    left:10px!important;
+    right:10px!important;
+    bottom:74px!important;
+    width:auto!important;
+    transform:none!important;
+    max-height:270px!important;
+  }
+  body.city-mode .tool-panel .classic-tool-section.active,
+  body.city-mode .tool-section[data-tool-section="zone"].active,
+  body.city-mode .tool-section[data-tool-section="transport"].active,
+  body.city-mode .tool-section[data-tool-section="upgrade"].active,
+  body.city-mode .tool-section[data-tool-section="tmpe"].active{
+    grid-template-columns:repeat(2,minmax(120px,1fr))!important;
+  }
+}
+@media(max-width:920px){
+  body.city-mode .classic-left-panel{display:none!important;}
+  body.city-mode .tool-panel{left:10px!important;right:10px!important;bottom:74px!important;width:auto!important;max-height:44vh!important;}
+}
+
+
+/* ===================== v2.3.17.4 — clique clássico + submenus compactos =====================
+   Construção linear confirma no pointerdown; o submenu precisa ocupar pouco espaço como no jogo antigo. */
+body.city-mode .tool-panel{
+  width:min(740px, calc(100vw - 360px))!important;
+  max-height:158px!important;
+  bottom:72px!important;
+  padding:7px 9px!important;
+  overflow:auto!important;
+  scrollbar-width:thin;
+}
+body.city-mode .tool-panel-head{
+  position:relative!important;
+  padding:5px 7px!important;
+  margin:0 0 5px!important;
+  min-height:0!important;
+}
+body.city-mode .tool-panel .panel-title{font-size:10px!important;letter-spacing:.12em!important}
+body.city-mode .tool-panel-subtitle,
+body.city-mode .classic-subtitle,
+body.city-mode .tool-empty-icon,
+body.city-mode .optional-advanced,
+body.city-mode .tool-panel .tool-hint,
+body.city-mode .tool-panel .tool-mini-stats,
+body.city-mode .tool-panel .tool-stats,
+body.city-mode .tool-section[data-tool-section="none"] p{
+  display:none!important;
+}
+body.city-mode .tool-panel .classic-tool-section.active,
+body.city-mode .tool-section[data-tool-section="zone"].active,
+body.city-mode .tool-section[data-tool-section="transport"].active,
+body.city-mode .tool-section[data-tool-section="upgrade"].active,
+body.city-mode .tool-section[data-tool-section="tmpe"].active{
+  display:grid!important;
+  grid-template-columns:1.2fr 1.05fr 1.45fr 1fr auto!important;
+  gap:6px!important;
+  align-items:start!important;
+}
+body.city-mode .tool-panel .classic-tool-group,
+body.city-mode .lane-class-panel,
+body.city-mode .tmpe-legend{
+  margin:0!important;
+  padding:6px!important;
+  border-radius:10px!important;
+}
+body.city-mode .classic-tool-group>label,
+body.city-mode .lane-class-panel>b{
+  font-size:9px!important;
+  margin-bottom:4px!important;
+}
+body.city-mode .classic-choice-grid,
+body.city-mode .classic-stepper,
+body.city-mode .classic-two-buttons,
+body.city-mode .tmpe-lane-grid,
+body.city-mode .tmpe-class-grid,
+body.city-mode .lane-class-buttons{
+  gap:4px!important;
+}
+body.city-mode .tool-panel button{
+  min-height:24px!important;
+  height:26px!important;
+  border-radius:8px!important;
+  font-size:10px!important;
+  padding:0 7px!important;
+}
+body.city-mode .tool-panel-close{width:26px!important;height:26px!important;min-width:26px!important;padding:0!important}
+body.city-mode .classic-current{
+  margin-top:3px!important;
+  font-size:9px!important;
+}
+body.city-mode .classic-level-readout{
+  margin:0!important;
+  padding:6px 7px!important;
+  font-size:10px!important;
+  align-self:stretch!important;
+}
+body.city-mode .speed-quick-buttons{grid-template-columns:repeat(4,1fr)!important}
+body.city-mode .rail-speed-buttons{grid-template-columns:repeat(3,1fr)!important}
+body.city-mode .rail-system-presets{grid-template-columns:repeat(3,1fr)!important}
+body.city-mode .classic-bottombar{
+  padding:7px!important;
+  bottom:10px!important;
+}
+body.city-mode .classic-bottombar .tool-cluster button{
+  width:74px!important;
+  height:50px!important;
+  padding:5px!important;
+}
+body.city-mode .classic-bottombar .tool-ico{font-size:18px!important}
+body.city-mode .classic-bottombar .tool-label{font-size:10px!important}
+@media(max-width:1180px){
+  body.city-mode .tool-panel{left:10px!important;right:10px!important;transform:none!important;width:auto!important;max-height:168px!important}
+  body.city-mode .tool-panel .classic-tool-section.active,
+  body.city-mode .tool-section[data-tool-section="zone"].active,
+  body.city-mode .tool-section[data-tool-section="transport"].active,
+  body.city-mode .tool-section[data-tool-section="upgrade"].active,
+  body.city-mode .tool-section[data-tool-section="tmpe"].active{grid-template-columns:repeat(3,minmax(110px,1fr))!important}
+}
+
+
+/* ===================== v2.3.17.5 — boot limpo + anti-flash =====================
+   Enquanto JS não define o fluxo, só a tela inicial aparece. Evita gerador + HUD + bottombar misturados por segundos. */
+body:not(.app-ready) #topbar,
+body:not(.app-ready) #ui,
+body:not(.app-ready) #classicLeftPanel,
+body:not(.app-ready) #toolPanel,
+body:not(.app-ready) #bottombar,
+body:not(.app-ready) #hamburgerMenu,
+body:not(.app-ready) .tn-info-dock,
+body:not(.app-ready) .tn-info-panel,
+body:not(.app-ready) .tn-minimap,
+body:not(.app-ready) .newcore-minimap,
+body:not(.app-ready) .pill,
+body:not(.app-ready) .toast{display:none!important;}
+body:not(.app-ready) .start-screen{display:flex!important;}
+body.city-mode #ui{display:none!important;}
+body.city-mode .tool-panel[data-active-tool="none"]{display:none!important;}
+body.city-mode .tool-panel{max-height:142px!important;}
+body.city-mode .tool-panel::-webkit-scrollbar{height:6px;width:6px;}
+body.city-mode .tool-panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:999px;}
+
+
+/* ===================== v2.3.18 — UI clássica consolidada + submenus compactos ===================== */
+body.city-mode #topbar.topbar{
+  top:0!important;left:0!important;right:0!important;transform:none!important;
+  width:auto!important;max-width:none!important;min-width:0!important;height:52px!important;
+  border-radius:0!important;padding:0 14px!important;justify-content:flex-start!important;
+  gap:10px!important;background:rgba(8,18,23,.94)!important;border:0!important;border-bottom:1px solid rgba(255,255,255,.08)!important;
+}
+.hamb-top{width:36px;height:34px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#eaf2f0;font-weight:900;cursor:pointer}
+body.city-mode .brand{min-width:185px!important;width:185px!important}.brand strong{letter-spacing:.01em}.brand span{max-width:170px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.city-mode .hud-pill{height:34px!important;padding:0 11px!important;min-width:auto!important;border-radius:11px!important;background:rgba(255,255,255,.055)!important}.hud-pill b{font-size:9px}.hud-pill span{font-size:12px}
+body.city-mode .classic-left-panel{top:64px!important;left:10px!important;width:244px!important;max-height:calc(100vh - 148px)!important;border-radius:16px!important;background:rgba(8,20,18,.90)!important}
+body.city-mode .classic-tabs{padding:8px!important;gap:5px!important}.classic-tabs button{min-height:28px!important;font-size:10px!important}
+body.city-mode .classic-panel-body{padding:10px!important}.classic-panel-body h2{font-size:12px!important;margin:0 0 10px!important}.classic-cards{gap:7px!important}.classic-cards article{min-height:28px!important;padding:7px 9px!important}
+body.city-mode .classic-bottombar{left:10px!important;right:10px!important;bottom:8px!important;padding:7px!important;border-radius:16px!important;background:rgba(7,13,15,.94)!important;z-index:30!important}.classic-bottombar .tool-cluster{gap:6px!important}
+body.city-mode .classic-bottombar .tool-cluster button{width:72px!important;height:48px!important;border-radius:11px!important}.classic-bottombar .tool-ico{font-size:18px!important}.classic-bottombar .tool-label{font-size:10px!important}
+body.city-mode .tool-panel{left:50%!important;right:auto!important;bottom:68px!important;transform:translateX(-50%)!important;width:min(760px,calc(100vw - 300px))!important;max-height:112px!important;overflow-x:auto!important;overflow-y:hidden!important;padding:6px 8px!important;border-radius:14px!important;background:rgba(9,21,19,.94)!important;z-index:25!important;box-shadow:0 14px 35px rgba(0,0,0,.42)!important}
+body.city-mode .tool-panel-head{float:left!important;position:relative!important;width:138px!important;height:82px!important;margin:0 8px 0 0!important;padding:6px!important;border-radius:10px!important;display:block!important;background:rgba(255,255,255,.045)!important;border:1px solid rgba(255,255,255,.075)!important}.tool-panel-close{position:absolute!important;right:6px!important;top:6px!important}.tool-panel .panel-title{font-size:10px!important}.tool-panel-subtitle{display:none!important}
+body.city-mode .tool-panel .classic-tool-section.active,body.city-mode .tool-section[data-tool-section="zone"].active,body.city-mode .tool-section[data-tool-section="transport"].active,body.city-mode .tool-section[data-tool-section="upgrade"].active,body.city-mode .tool-section[data-tool-section="tmpe"].active{display:flex!important;flex-wrap:nowrap!important;gap:7px!important;align-items:stretch!important;min-width:max-content!important}.tool-section-title,.classic-subtitle,.optional-advanced,.tool-hint,.tool-mini-stats,.tool-stats,.tmpe-summary{display:none!important}
+body.city-mode .classic-tool-group,body.city-mode .lane-class-panel,body.city-mode .tmpe-legend{width:145px!important;min-width:145px!important;margin:0!important;padding:6px!important;border-radius:10px!important}.classic-tool-group>label,.lane-class-panel>b{font-size:9px!important;margin-bottom:4px!important}.classic-choice-grid,.classic-stepper,.classic-two-buttons,.tmpe-lane-grid,.tmpe-class-grid,.lane-class-buttons{gap:4px!important}.classic-choice-grid button,.classic-stepper button,.classic-two-buttons button,.tmpe-lane-grid button,.tmpe-class-grid button,.lane-class-buttons button{min-height:23px!important;height:24px!important;font-size:10px!important;border-radius:7px!important;padding:0 6px!important}.classic-current{display:none!important}.classic-level-readout{width:122px!important;min-width:122px!important;font-size:10px!important;padding:6px!important;margin:0!important}.classic-level-readout span{display:block!important;font-size:8px!important}.speed-quick-buttons{grid-template-columns:repeat(4,1fr)!important}.rail-speed-buttons{grid-template-columns:repeat(3,1fr)!important}
+body.city-mode .tn-info-dock,body.city-mode .tn-info-panel,body.city-mode .tmpe-panel,body.city-mode .tn-minimap,body.city-mode .newcore-minimap,body.city-mode .pill{display:none!important}
+body.generator-mode #topbar,body.generator-mode #bottombar,body.generator-mode #classicLeftPanel,body.generator-mode #toolPanel{display:none!important}
+@media(max-width:1180px){body.city-mode .tool-panel{left:10px!important;right:10px!important;width:auto!important;transform:none!important;max-height:132px!important}body.city-mode .classic-left-panel{width:228px!important}.classic-bottombar .tool-cluster button{width:64px!important}}
+
+
+/* v2.3.19 - Classic construction panel hotfix
+   Bottom tools must behave like the old game: compact tray above bottom bar, never a large side/modal panel. */
+body.city-mode .tool-panel{
+  position:fixed!important;
+  left:50%!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:82px!important;
+  transform:translateX(-50%)!important;
+  width:min(760px, calc(100vw - 430px))!important;
+  min-width:520px!important;
+  max-height:118px!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  padding:7px 9px!important;
+  border-radius:13px!important;
+  display:none;
+  z-index:8!important;
+}
+body.city-mode .tool-panel[data-active-tool]:not([data-active-tool="none"]){display:block!important;}
+body.city-mode .tool-panel-head{display:none!important;}
+body.city-mode .tool-panel .tool-section{display:none!important;}
+body.city-mode .tool-panel .tool-section.active,
+body.city-mode .tool-panel .classic-tool-section.active,
+body.city-mode .tool-panel .tool-section[data-tool-section="zone"].active,
+body.city-mode .tool-panel .tool-section[data-tool-section="transport"].active,
+body.city-mode .tool-panel .tool-section[data-tool-section="upgrade"].active,
+body.city-mode .tool-panel .tool-section[data-tool-section="tmpe"].active{
+  display:flex!important;
+  align-items:stretch!important;
+  gap:6px!important;
+  flex-wrap:nowrap!important;
+  padding:0!important;
+  min-width:max-content!important;
+}
+body.city-mode .tool-section-title,
+body.city-mode .classic-subtitle,
+body.city-mode .tool-hint,
+body.city-mode .tool-mini-stats,
+body.city-mode .tool-stats,
+body.city-mode .optional-advanced,
+body.city-mode .tmpe-summary,
+body.city-mode .classic-current{display:none!important;}
+body.city-mode .classic-tool-group,
+body.city-mode .lane-class-panel,
+body.city-mode .tmpe-legend{
+  width:128px!important;
+  min-width:128px!important;
+  margin:0!important;
+  padding:5px!important;
+  border-radius:9px!important;
+}
+body.city-mode .classic-tool-group>label,
+body.city-mode .lane-class-panel>b{
+  font-size:8px!important;
+  line-height:1!important;
+  margin:0 0 4px!important;
+  white-space:nowrap!important;
+}
+body.city-mode .classic-choice-grid,
+body.city-mode .classic-stepper,
+body.city-mode .classic-two-buttons,
+body.city-mode .tmpe-lane-grid,
+body.city-mode .tmpe-class-grid,
+body.city-mode .lane-class-buttons{
+  gap:3px!important;
+}
+body.city-mode .classic-choice-grid button,
+body.city-mode .classic-stepper button,
+body.city-mode .classic-two-buttons button,
+body.city-mode .tmpe-lane-grid button,
+body.city-mode .tmpe-class-grid button,
+body.city-mode .lane-class-buttons button{
+  min-height:22px!important;
+  height:22px!important;
+  font-size:9px!important;
+  border-radius:7px!important;
+  padding:0 5px!important;
+}
+body.city-mode .classic-level-readout{
+  width:104px!important;
+  min-width:104px!important;
+  margin:0!important;
+  padding:5px 6px!important;
+  font-size:9px!important;
+  border-radius:9px!important;
+}
+body.city-mode .classic-level-readout span{font-size:7px!important;}
+body.city-mode .classic-bottombar{bottom:10px!important;padding:7px!important;}
+body.city-mode .classic-bottombar .tool-cluster button{height:50px!important;min-width:72px!important;padding:5px 9px!important;}
+body.city-mode .classic-bottombar .tool-ico{font-size:20px!important;}
+body.city-mode .classic-bottombar .tool-label{font-size:10px!important;}
+@media(max-width:1100px){body.city-mode .tool-panel{left:320px!important;right:12px!important;transform:none!important;width:auto!important;min-width:0!important;}}
+
+
+/* ===================== v2.3.19.2 — UI boot guard definitivo =====================
+   Se o HTML/JS entra sem modo visual, nunca deixar o usuário só com o mapa sem interface. */
+body.start-mode #startScreen{display:flex!important;}
+body.start-mode #topbar,
+body.start-mode #ui,
+body.start-mode #classicLeftPanel,
+body.start-mode #toolPanel,
+body.start-mode #bottombar,
+body.start-mode #hamburgerMenu,
+body.start-mode .tn-info-dock,
+body.start-mode .tn-info-panel,
+body.start-mode .tn-minimap,
+body.start-mode .newcore-minimap,
+body.start-mode .tmpe-panel,
+body.start-mode .pill{display:none!important;}
+
+body.generator-mode #startScreen,
+body.generator-mode #topbar,
+body.generator-mode #classicLeftPanel,
+body.generator-mode #toolPanel,
+body.generator-mode #bottombar,
+body.generator-mode #hamburgerMenu,
+body.generator-mode .tn-info-dock,
+body.generator-mode .tn-info-panel,
+body.generator-mode .tn-minimap,
+body.generator-mode .newcore-minimap,
+body.generator-mode .tmpe-panel,
+body.generator-mode .pill{display:none!important;}
+body.generator-mode #ui{display:block!important;left:16px!important;top:70px!important;width:350px!important;opacity:1!important;transform:none!important;z-index:20!important;}
+
+body.city-mode #startScreen,
+body.city-mode #ui{display:none!important;}
+body.city-mode #topbar{display:flex!important;}
+body.city-mode #classicLeftPanel{display:block!important;}
+body.city-mode #bottombar{display:flex!important;}
+
+body.app-ready:not(.start-mode):not(.generator-mode):not(.city-mode) #startScreen{display:flex!important;}
+body.app-ready:not(.start-mode):not(.generator-mode):not(.city-mode) #topbar,
+body.app-ready:not(.start-mode):not(.generator-mode):not(.city-mode) #ui,
+body.app-ready:not(.start-mode):not(.generator-mode):not(.city-mode) #classicLeftPanel,
+body.app-ready:not(.start-mode):not(.generator-mode):not(.city-mode) #toolPanel,
+body.app-ready:not(.start-mode):not(.generator-mode):not(.city-mode) #bottombar{display:none!important;}
+
+
+/* ===================== v2.3.19.3 - Classic UI Layout Fix =====================
+   Estado visual unico: start / generator / city. O ambiente moderno do NewCore
+   continua intacto; este bloco so resolve HUD, fluxo e limites de viewport. */
+*,*::before,*::after{box-sizing:border-box}
+
+body.start-mode #startScreen{display:flex!important}
+body.start-mode #topbar,
+body.start-mode #ui,
+body.start-mode #classicLeftPanel,
+body.start-mode #toolPanel,
+body.start-mode #bottombar,
+body.start-mode #hamburgerMenu,
+body.start-mode #tnInfoDock,
+body.start-mode #tnInfoPanel,
+body.start-mode #tnMinimap,
+body.start-mode .tn-info-dock,
+body.start-mode .tn-info-panel,
+body.start-mode .tn-minimap,
+body.start-mode .newcore-minimap,
+body.start-mode .tmpe-panel,
+body.start-mode .tn-shortcuts-btn,
+body.start-mode .tn-shortcuts-modal,
+body.start-mode .pill,
+body.start-mode .toast{display:none!important}
+
+body.generator-mode #startScreen,
+body.generator-mode #topbar,
+body.generator-mode #classicLeftPanel,
+body.generator-mode #toolPanel,
+body.generator-mode #bottombar,
+body.generator-mode #hamburgerMenu,
+body.generator-mode #tnInfoDock,
+body.generator-mode #tnInfoPanel,
+body.generator-mode #tnMinimap,
+body.generator-mode .tn-info-dock,
+body.generator-mode .tn-info-panel,
+body.generator-mode .tn-minimap,
+body.generator-mode .newcore-minimap,
+body.generator-mode .tmpe-panel,
+body.generator-mode .tn-shortcuts-btn,
+body.generator-mode .tn-shortcuts-modal,
+body.generator-mode .pill{display:none!important}
+body.generator-mode #ui{
+  display:block!important;
+  left:16px!important;
+  top:16px!important;
+  width:min(360px,calc(100vw - 32px))!important;
+  max-height:calc(100vh - 32px)!important;
+  opacity:1!important;
+  transform:none!important;
+  z-index:20!important;
+}
+
+body.city-mode #startScreen,
+body.city-mode #ui,
+body.city-mode #tnInfoDock,
+body.city-mode #tnInfoPanel,
+body.city-mode #tnMinimap,
+body.city-mode .tn-info-dock,
+body.city-mode .tn-info-panel,
+body.city-mode .tn-minimap,
+body.city-mode .newcore-minimap,
+body.city-mode .tmpe-panel,
+body.city-mode .tn-shortcuts-btn,
+body.city-mode .tn-shortcuts-modal,
+body.city-mode .pill{display:none!important}
+
+body.city-mode #topbar.topbar{
+  display:flex!important;
+  position:fixed!important;
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  transform:none!important;
+  width:100vw!important;
+  max-width:none!important;
+  min-width:0!important;
+  height:52px!important;
+  padding:0 12px!important;
+  gap:8px!important;
+  border-radius:0!important;
+  border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.10)!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  justify-content:flex-start!important;
+  scrollbar-width:thin;
+  z-index:40!important;
+}
+body.city-mode .hamb-top{
+  flex:0 0 36px!important;
+  width:36px!important;
+  height:34px!important;
+}
+body.city-mode .brand{
+  flex:0 0 178px!important;
+  min-width:178px!important;
+  width:178px!important;
+  margin:0 2px 0 0!important;
+}
+body.city-mode .brand span{max-width:168px!important}
+body.city-mode .hud-pill{
+  flex:0 0 auto!important;
+  height:32px!important;
+  padding:0 9px!important;
+  border-radius:10px!important;
+}
+
+body.city-mode #classicLeftPanel.classic-left-panel{
+  display:block!important;
+  left:10px!important;
+  right:auto!important;
+  top:64px!important;
+  width:244px!important;
+  max-height:calc(100vh - 148px)!important;
+  transform:none!important;
+  overflow:hidden!important;
+  z-index:20!important;
+}
+body.city-mode #classicLeftPanel .classic-tabs{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  padding:8px!important;
+  gap:5px!important;
+}
+body.city-mode #classicLeftPanel .classic-tabs button{
+  min-width:0!important;
+  min-height:28px!important;
+  height:28px!important;
+  padding:0 6px!important;
+  font-size:10px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.city-mode #classicLeftPanel .classic-panel-body{
+  max-height:calc(100vh - 222px)!important;
+  overflow:auto!important;
+}
+
+body.city-mode #bottombar.classic-bottombar{
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr) auto!important;
+  align-items:center!important;
+  left:10px!important;
+  right:10px!important;
+  bottom:8px!important;
+  transform:none!important;
+  width:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+  max-height:64px!important;
+  padding:7px!important;
+  gap:8px!important;
+  overflow:hidden!important;
+  border-radius:14px!important;
+  z-index:35!important;
+}
+body.city-mode #bottombar .speed-cluster,
+body.city-mode #bottombar .tool-cluster,
+body.city-mode #bottombar .save-cluster{
+  display:flex!important;
+  align-items:center!important;
+  gap:5px!important;
+  min-width:0!important;
+}
+body.city-mode #bottombar .tool-cluster{
+  justify-content:center!important;
+  flex-wrap:nowrap!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  scrollbar-width:thin;
+}
+body.city-mode #bottombar .save-cluster,
+body.city-mode #bottombar .speed-cluster{flex:0 0 auto!important}
+body.city-mode #bottombar button{
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.city-mode #bottombar .compact-action{
+  height:34px!important;
+  min-width:36px!important;
+  padding:0 8px!important;
+  border-radius:9px!important;
+  font-size:11px!important;
+}
+body.city-mode #bottombar .save-cluster .compact-action{
+  min-width:66px!important;
+}
+body.city-mode #bottombar .tool-cluster button[data-tool]{
+  flex:0 0 66px!important;
+  width:66px!important;
+  min-width:66px!important;
+  height:48px!important;
+  padding:4px 5px!important;
+  border-radius:10px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:2px!important;
+}
+body.city-mode #bottombar .tool-ico{font-size:18px!important;line-height:1!important}
+body.city-mode #bottombar .tool-label{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  font-size:9px!important;
+  line-height:1.05!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+
+body.city-mode #toolPanel.tool-panel{
+  position:fixed!important;
+  display:none!important;
+  left:272px!important;
+  right:10px!important;
+  top:auto!important;
+  bottom:78px!important;
+  transform:none!important;
+  width:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+  max-height:154px!important;
+  padding:7px!important;
+  border-radius:13px!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  scrollbar-width:thin;
+  z-index:34!important;
+}
+body.city-mode #toolPanel[data-active-tool]:not([data-active-tool="none"]){
+  display:block!important;
+}
+body.city-mode #toolPanel .tool-panel-head,
+body.city-mode #toolPanel .tool-section-title,
+body.city-mode #toolPanel .classic-subtitle,
+body.city-mode #toolPanel .optional-advanced,
+body.city-mode #toolPanel .tool-hint,
+body.city-mode #toolPanel .tool-mini-stats,
+body.city-mode #toolPanel .tool-stats,
+body.city-mode #toolPanel #inspectorText,
+body.city-mode #toolPanel .classic-current{display:none!important}
+body.city-mode #toolPanel .tool-section{display:none!important}
+body.city-mode #toolPanel .tool-section.active{
+  display:flex!important;
+  align-items:stretch!important;
+  gap:7px!important;
+  flex-wrap:nowrap!important;
+  min-width:max-content!important;
+  padding:0!important;
+}
+body.city-mode #toolPanel .classic-tool-group,
+body.city-mode #toolPanel .lane-class-panel,
+body.city-mode #toolPanel .tmpe-legend,
+body.city-mode #toolPanel .tool-choice-grid,
+body.city-mode #toolPanel .zone-buttons,
+body.city-mode #toolPanel .side-buttons,
+body.city-mode #toolPanel .direction-buttons,
+body.city-mode #toolPanel .geometry-buttons,
+body.city-mode #toolPanel .tmpe-mode-buttons,
+body.city-mode #toolPanel .transit-actions{
+  flex:0 0 132px!important;
+  width:132px!important;
+  min-width:132px!important;
+  margin:0!important;
+  padding:6px!important;
+  border-radius:9px!important;
+}
+body.city-mode #toolPanel .classic-tool-group>label,
+body.city-mode #toolPanel .lane-class-panel>b,
+body.city-mode #toolPanel .classic-label{
+  display:block!important;
+  margin:0 0 4px!important;
+  font-size:8px!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.city-mode #toolPanel .classic-choice-grid,
+body.city-mode #toolPanel .classic-stepper,
+body.city-mode #toolPanel .classic-two-buttons,
+body.city-mode #toolPanel .tmpe-class-grid,
+body.city-mode #toolPanel .lane-class-buttons,
+body.city-mode #toolPanel .segmented.compact{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:3px!important;
+}
+body.city-mode #toolPanel .rail-system-presets{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+body.city-mode #toolPanel .classic-stepper{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+body.city-mode #toolPanel .speed-quick-buttons,
+body.city-mode #toolPanel .rail-speed-buttons{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+body.city-mode #toolPanel button{
+  min-width:0!important;
+  min-height:22px!important;
+  height:23px!important;
+  padding:0 5px!important;
+  border-radius:7px!important;
+  font-size:9px!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.city-mode #toolPanel .classic-level-readout{
+  flex:0 0 104px!important;
+  width:104px!important;
+  min-width:104px!important;
+  margin:0!important;
+  padding:6px!important;
+  border-radius:9px!important;
+  font-size:9px!important;
+  line-height:1.15!important;
+}
+body.city-mode #toolPanel .classic-level-readout span{
+  display:block!important;
+  margin-top:3px!important;
+  font-size:7px!important;
+}
+
+@media(max-width:1366px){
+  body.city-mode #topbar .hud-pill:nth-of-type(n+8){display:none!important}
+  body.city-mode #bottombar .tool-cluster button[data-tool]{
+    flex-basis:62px!important;
+    width:62px!important;
+    min-width:62px!important;
+  }
+  body.city-mode #bottombar .save-cluster .compact-action{min-width:62px!important}
+}
+@media(max-width:1100px){
+  body.city-mode #classicLeftPanel.classic-left-panel{display:none!important}
+  body.city-mode #toolPanel.tool-panel{
+    left:10px!important;
+    right:10px!important;
+    bottom:78px!important;
+    max-height:156px!important;
+  }
+  body.city-mode #bottombar.classic-bottombar{
+    grid-template-columns:minmax(0,1fr)!important;
+    max-height:118px!important;
+  }
+  body.city-mode #bottombar .speed-cluster,
+  body.city-mode #bottombar .save-cluster{justify-content:center!important}
+}
+@media(max-width:760px){
+  body.city-mode #topbar .brand{display:none!important}
+  body.city-mode #topbar .hud-pill:nth-of-type(n+5){display:none!important}
+  body.city-mode #toolPanel.tool-panel{max-height:42vh!important}
+}
+
+
+/* ===== v2.3.21 — correção final da rodada: UI/ferramentas no padrão antigo ===== */
+body.city-mode #toolPanel.tool-panel{
+  left:268px!important;
+  right:auto!important;
+  bottom:78px!important;
+  width:auto!important;
+  max-width:min(760px, calc(100vw - 292px))!important;
+  max-height:112px!important;
+  padding:6px!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  border-radius:12px!important;
+}
+body.city-mode #toolPanel .tool-section.active{
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  align-items:stretch!important;
+  gap:6px!important;
+  min-width:max-content!important;
+}
+body.city-mode #toolPanel .classic-tool-group,
+body.city-mode #toolPanel .lane-class-panel,
+body.city-mode #toolPanel .tmpe-legend,
+body.city-mode #toolPanel .transit-actions,
+body.city-mode #toolPanel .tool-choice-grid,
+body.city-mode #toolPanel .zone-buttons,
+body.city-mode #toolPanel .side-buttons,
+body.city-mode #toolPanel .direction-buttons,
+body.city-mode #toolPanel .geometry-buttons,
+body.city-mode #toolPanel .tmpe-mode-buttons{
+  flex:0 0 118px!important;
+  min-width:118px!important;
+  width:118px!important;
+  padding:5px!important;
+  margin:0!important;
+}
+body.city-mode #toolPanel .classic-tool-group>label,
+body.city-mode #toolPanel .lane-class-panel>b,
+body.city-mode #toolPanel .classic-label{
+  font-size:8px!important;
+  margin-bottom:3px!important;
+}
+body.city-mode #toolPanel button{
+  min-height:20px!important;
+  height:21px!important;
+  padding:0 4px!important;
+  font-size:8.5px!important;
+}
+body.city-mode #toolPanel .classic-level-readout{display:none!important}
+body.city-mode #toolPanel .classic-subtitle,
+body.city-mode #toolPanel .tool-section-title,
+body.city-mode #toolPanel .tool-panel-head,
+body.city-mode #toolPanel .classic-current,
+body.city-mode #toolPanel .optional-advanced,
+body.city-mode #toolPanel .tool-hint,
+body.city-mode #toolPanel .tmpe-summary{display:none!important}
+body.city-mode #bottombar.classic-bottombar{
+  max-height:62px!important;
+  height:62px!important;
+}
+body.city-mode #bottombar .tool-cluster button[data-tool]{
+  flex:0 0 60px!important;
+  min-width:60px!important;
+  width:60px!important;
+  height:46px!important;
+}
+body.city-mode #bottombar .tool-ico{font-size:17px!important}
+body.city-mode #bottombar .tool-label{font-size:8.5px!important}
+body.city-mode #classicLeftPanel.classic-left-panel{width:244px!important}
+body.city-mode #topbar{height:52px!important;min-height:52px!important;}
+body.city-mode #topbar .hud-pill{height:34px!important;min-width:auto!important;padding:0 10px!important;}
+@media(max-width:1366px){
+  body.city-mode #toolPanel.tool-panel{left:260px!important;max-width:calc(100vw - 274px)!important;}
+  body.city-mode #bottombar .tool-cluster button[data-tool]{flex-basis:58px!important;width:58px!important;min-width:58px!important;}
+}
+
+/* ===== v2.4.0 - paridade de layout com o SIMURB antigo ===== */
+body.city-mode #classicLeftPanel.classic-left-panel{
+  display:none!important;
+}
+body.city-mode #tnInfoDock.tn-info-dock{
+  display:flex!important;
+  position:fixed!important;
+  left:10px!important;
+  right:auto!important;
+  top:64px!important;
+  bottom:auto!important;
+  width:46px!important;
+  max-width:46px!important;
+  transform:none!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  gap:6px!important;
+  padding:7px 5px!important;
+  border-radius:14px!important;
+  background:rgba(7,13,15,.94)!important;
+  border:1px solid rgba(235,240,230,.12)!important;
+  box-shadow:0 16px 46px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.07)!important;
+  backdrop-filter:blur(14px)!important;
+  z-index:36!important;
+}
+body.city-mode #tnInfoDock.hidden{
+  display:none!important;
+}
+body.city-mode #tnInfoDock .tn-info-tool{
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  min-height:34px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:0!important;
+  border-radius:10px!important;
+  font-size:16px!important;
+  line-height:1!important;
+  color:#eef7ee!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035))!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+}
+body.city-mode #tnInfoDock .tn-info-tool.active{
+  background:linear-gradient(180deg,rgba(128,200,100,.31),rgba(58,103,49,.24))!important;
+  border-color:rgba(128,200,100,.42)!important;
+}
+body.city-mode #tnInfoDock .tn-info-sep{
+  width:24px!important;
+  height:1px!important;
+  margin:2px 0!important;
+  background:rgba(255,255,255,.14)!important;
+}
+body.city-mode #tnInfoPanel.tn-info-panel{
+  position:fixed!important;
+  left:66px!important;
+  right:auto!important;
+  top:64px!important;
+  bottom:auto!important;
+  width:330px!important;
+  max-width:min(330px,calc(100vw - 82px))!important;
+  max-height:calc(100vh - 146px)!important;
+  transform:none!important;
+  overflow:auto!important;
+  border-radius:16px!important;
+  background:rgba(8,20,18,.94)!important;
+  border:1px solid rgba(235,240,230,.12)!important;
+  box-shadow:0 20px 60px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.07)!important;
+  z-index:35!important;
+}
+body.city-mode #tnInfoPanel.tn-info-panel:not(.hidden){
+  display:block!important;
+}
+body.city-mode #tnInfoPanel.tn-info-panel.hidden{
+  display:none!important;
+}
+body.city-mode #toolPanel.tool-panel{
+  left:66px!important;
+  max-width:calc(100vw - 82px)!important;
+}
+@media(max-width:920px){
+  body.city-mode #tnInfoDock.tn-info-dock{display:none!important;}
+  body.city-mode #tnInfoPanel.tn-info-panel{display:none!important;}
+  body.city-mode #toolPanel.tool-panel{left:10px!important;max-width:calc(100vw - 20px)!important;}
+}
+
+/* ===== v2.4.2 — submenus mais jogáveis + cards legíveis ===== */
+body.city-mode #toolPanel.tool-panel{
+  left:66px!important;
+  right:12px!important;
+  bottom:78px!important;
+  width:auto!important;
+  max-width:none!important;
+  max-height:238px!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  padding:10px 12px 12px!important;
+  border-radius:18px!important;
+  background:linear-gradient(180deg,rgba(9,19,18,.96),rgba(7,13,13,.92))!important;
+  border:1px solid rgba(235,240,230,.14)!important;
+  box-shadow:0 22px 70px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.07)!important;
+  z-index:38!important;
+}
+body.city-mode #toolPanel[data-active-tool="none"]{display:none!important;}
+body.city-mode #toolPanel .tool-panel-head{
+  display:flex!important;
+  position:sticky!important;
+  top:0!important;
+  z-index:4!important;
+  float:none!important;
+  width:auto!important;
+  height:auto!important;
+  margin:0 0 9px!important;
+  padding:8px 9px!important;
+  border-radius:13px!important;
+  background:rgba(255,255,255,.055)!important;
+  border:1px solid rgba(255,255,255,.085)!important;
+}
+body.city-mode #toolPanel .tool-panel-subtitle{display:block!important;font-size:11px!important;color:#aebbae!important;line-height:1.25!important;}
+body.city-mode #toolPanel .tool-panel-close{display:flex!important;align-items:center!important;justify-content:center!important;}
+body.city-mode #toolPanel .tool-section{display:none!important;}
+body.city-mode #toolPanel .tool-section.active,
+body.city-mode #toolPanel .classic-tool-section.active,
+body.city-mode #toolPanel .tool-section[data-tool-section="zone"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="transport"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="terrain"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="bus-stop"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="bus-line"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="rail-station"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="rail-line"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="upgrade"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="tmpe"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="demolish"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="inspect"].active{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(145px,1fr))!important;
+  gap:9px!important;
+  align-items:stretch!important;
+  min-width:0!important;
+  padding:0!important;
+}
+body.city-mode #toolPanel .tool-section-title,
+body.city-mode #toolPanel .classic-subtitle{
+  display:block!important;
+  grid-column:1/-1!important;
+  margin:0!important;
+}
+body.city-mode #toolPanel .tool-section-title{font-size:11px!important;letter-spacing:.12em!important;color:#9dda78!important;text-transform:uppercase!important;}
+body.city-mode #toolPanel .classic-subtitle{font-size:11px!important;color:#aebbae!important;line-height:1.35!important;margin-top:-4px!important;}
+body.city-mode #toolPanel .classic-tool-group,
+body.city-mode #toolPanel .classic-group,
+body.city-mode #toolPanel .lane-class-panel,
+body.city-mode #toolPanel .tmpe-legend,
+body.city-mode #toolPanel .transit-actions,
+body.city-mode #toolPanel .tool-choice-grid,
+body.city-mode #toolPanel .zone-buttons,
+body.city-mode #toolPanel .side-buttons,
+body.city-mode #toolPanel .direction-buttons,
+body.city-mode #toolPanel .geometry-buttons,
+body.city-mode #toolPanel .tmpe-mode-buttons,
+body.city-mode #toolPanel .tool-mini-stats,
+body.city-mode #toolPanel .tool-stats{
+  flex:initial!important;
+  width:auto!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:9px!important;
+  border-radius:13px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.030))!important;
+  border:1px solid rgba(255,255,255,.09)!important;
+}
+body.city-mode #toolPanel .classic-tool-group>label,
+body.city-mode #toolPanel .lane-class-panel>b,
+body.city-mode #toolPanel .classic-label{
+  display:block!important;
+  margin:0 0 7px!important;
+  font-size:10px!important;
+  line-height:1.1!important;
+  letter-spacing:.08em!important;
+  text-transform:uppercase!important;
+  color:#c9d8ca!important;
+  white-space:normal!important;
+}
+body.city-mode #toolPanel .classic-choice-grid,
+body.city-mode #toolPanel .classic-stepper,
+body.city-mode #toolPanel .classic-two-buttons,
+body.city-mode #toolPanel .tmpe-class-grid,
+body.city-mode #toolPanel .lane-class-buttons,
+body.city-mode #toolPanel .segmented.compact,
+body.city-mode #toolPanel .zone-buttons,
+body.city-mode #toolPanel .side-buttons,
+body.city-mode #toolPanel .direction-buttons,
+body.city-mode #toolPanel .geometry-buttons,
+body.city-mode #toolPanel .tmpe-mode-buttons,
+body.city-mode #toolPanel .transit-actions,
+body.city-mode #toolPanel .tool-choice-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:6px!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+}
+body.city-mode #toolPanel .road-main-presets{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .speed-quick-buttons{grid-template-columns:repeat(4,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .rail-speed-buttons{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+body.city-mode #toolPanel button{
+  min-width:0!important;
+  min-height:30px!important;
+  height:32px!important;
+  padding:0 8px!important;
+  border-radius:10px!important;
+  font-size:11px!important;
+  line-height:1.05!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.city-mode #toolPanel .classic-current{display:block!important;margin-top:6px!important;font-size:10px!important;color:#d9e7d8!important;}
+body.city-mode #toolPanel .classic-level-readout{
+  display:block!important;
+  width:auto!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:9px!important;
+  border-radius:13px!important;
+  font-size:11px!important;
+  background:linear-gradient(180deg,rgba(117,181,92,.13),rgba(255,255,255,.035))!important;
+  border:1px solid rgba(143,211,107,.16)!important;
+}
+body.city-mode #toolPanel .classic-level-readout span{display:block!important;margin-top:4px!important;font-size:9px!important;color:#aebbae!important;}
+body.city-mode #toolPanel .optional-advanced{display:none!important;}
+body.city-mode #toolPanel .tool-hint,
+body.city-mode #toolPanel .danger-hint,
+body.city-mode #toolPanel #tmpeHint{
+  display:block!important;
+  grid-column:1/-1!important;
+  margin:0!important;
+  padding:8px 10px!important;
+  border-radius:12px!important;
+  font-size:11px!important;
+  line-height:1.35!important;
+  color:#bac8ba!important;
+}
+body.city-mode #toolPanel .tool-mini-stats,
+body.city-mode #toolPanel .tool-stats,
+body.city-mode #toolPanel .tmpe-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .lane-control{
+  display:grid!important;
+  grid-template-columns:auto minmax(90px,1fr) 30px!important;
+  gap:8px!important;
+  align-items:center!important;
+  margin:0!important;
+  padding:9px!important;
+  border-radius:13px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.030))!important;
+  border:1px solid rgba(255,255,255,.09)!important;
+}
+body.city-mode #toolPanel #inspectorText.inspector-text{display:none!important;}
+@media(max-width:1366px){
+  body.city-mode #toolPanel.tool-panel{max-height:218px!important;}
+  body.city-mode #toolPanel .tool-section.active,
+  body.city-mode #toolPanel .classic-tool-section.active{grid-template-columns:repeat(auto-fit,minmax(132px,1fr))!important;}
+  body.city-mode #toolPanel button{font-size:10.5px!important;padding:0 6px!important;}
+}
+@media(max-width:920px){
+  body.city-mode #toolPanel.tool-panel{left:10px!important;right:10px!important;bottom:74px!important;max-height:42vh!important;}
+  body.city-mode #toolPanel .tool-panel-head{display:none!important;}
+  body.city-mode #toolPanel .road-main-presets{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+}
+
+
+/* ===== v2.4.3 — ciclo dia/noite ===== */
+body.city-mode #dayNightToggle.daynight-action{
+  min-width:78px!important;
+  padding:0 10px!important;
+  letter-spacing:.01em!important;
+}
+body.city-mode #dayNightToggle.daynight-action.active{
+  background:linear-gradient(180deg,rgba(225,174,83,.32),rgba(135,91,38,.26))!important;
+  border-color:rgba(225,174,83,.46)!important;
+  box-shadow:0 0 0 1px rgba(225,174,83,.12),0 8px 22px rgba(120,75,28,.18),inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+
+
+/* v2.4.4 compact road/zone tool polish */
+body.city-mode #toolPanel.tool-panel{
+  left:82px!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:82px!important;
+  transform:none!important;
+  width:min(420px,calc(100vw - 112px))!important;
+  max-width:min(420px,calc(100vw - 112px))!important;
+  max-height:34vh!important;
+  overflow:auto!important;
+  padding:10px 12px!important;
+  border-radius:16px!important;
+}
+body.city-mode #toolPanel .tool-panel-head{display:flex!important;align-items:flex-start!important;justify-content:space-between!important;margin-bottom:8px!important;background:none!important;border:0!important;padding:0!important;width:auto!important;height:auto!important;float:none!important}
+body.city-mode #toolPanel .tool-panel-subtitle{display:block!important}
+body.city-mode #toolPanel .tool-section.active,body.city-mode #toolPanel .classic-tool-section.active{display:block!important;min-width:0!important}
+body.city-mode #toolPanel .classic-tool-group,body.city-mode #toolPanel .tool-section[data-tool-section="zone"] .zone-density-wrap{width:auto!important;min-width:0!important;margin:7px 0!important;padding:8px!important;border-radius:11px!important;background:rgba(255,255,255,.04)!important;border:1px solid rgba(255,255,255,.08)!important}
+body.city-mode #toolPanel .classic-tool-group>label,body.city-mode #toolPanel .zone-density-title{font-size:10px!important;font-weight:900!important;letter-spacing:.08em!important;text-transform:uppercase!important;color:#bfccb9!important;margin-bottom:6px!important}
+body.city-mode #toolPanel .classic-choice-grid,body.city-mode #toolPanel .classic-stepper,body.city-mode #toolPanel .classic-two-buttons,body.city-mode #toolPanel .zone-buttons,body.city-mode #toolPanel .side-buttons,body.city-mode #toolPanel .zone-density-buttons{display:grid!important;gap:6px!important}
+body.city-mode #toolPanel .road-main-presets{grid-template-columns:repeat(3,1fr)!important}
+body.city-mode #toolPanel .lane-quick-buttons{grid-template-columns:repeat(5,1fr)!important}
+body.city-mode #toolPanel .speed-quick-buttons{grid-template-columns:repeat(4,1fr)!important}
+body.city-mode #toolPanel .zone-buttons{grid-template-columns:repeat(3,1fr)!important}
+body.city-mode #toolPanel .zone-density-buttons{grid-template-columns:repeat(3,1fr)!important}
+body.city-mode #toolPanel .zone-density-buttons.disabled{opacity:.55!important}
+body.city-mode #toolPanel .zone-density-buttons button:disabled{opacity:.45!important;cursor:not-allowed!important}
+body.city-mode #toolPanel .zone-density-hint{margin-top:6px!important;font-size:11px!important;color:#9fb19c!important}
+body.city-mode #toolPanel button{min-height:29px!important;height:30px!important;font-size:11px!important;padding:0 8px!important;border-radius:8px!important}
+body.city-mode #toolPanel .tool-hint,body.city-mode #toolPanel .tool-mini-stats{display:block!important}
+body.city-mode #toolPanel .tool-mini-stats{margin-top:8px!important}
+body.city-mode #toolPanel .tool-panel-close{display:flex!important;align-items:center!important;justify-content:center!important}
+@media(max-width:1100px){body.city-mode #toolPanel.tool-panel{left:10px!important;right:10px!important;bottom:76px!important;width:auto!important;max-width:calc(100vw - 20px)!important;max-height:42vh!important}}
+
+/* v2.4.6 terrain brush polish */
+body.city-mode #toolPanel .terrain-brush-grid{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:6px!important;margin:8px 0!important}
+body.city-mode #toolPanel .terrain-brush-grid button.active{border-color:#96d36d!important;background:linear-gradient(180deg,rgba(127,180,88,.36),rgba(76,128,52,.28))!important;color:#f5ffe9!important;box-shadow:inset 0 0 0 1px rgba(185,255,145,.18)!important}
+
+/* ===== v2.4.7 stage 3 overrides ===== */
+body.city-mode #bottombar .save-cluster{display:none!important;}
+body.city-mode #bottombar.classic-bottombar{
+  left:10px!important;
+  right:10px!important;
+  transform:none!important;
+  width:auto!important;
+  max-width:calc(100vw - 20px)!important;
+  justify-content:space-between!important;
+  overflow:hidden!important;
+}
+body.city-mode #bottombar .tool-cluster{
+  flex:1 1 auto!important;
+  justify-content:center!important;
+  flex-wrap:wrap!important;
+}
+body.city-mode #bottombar .tool-cluster button[data-tool]{
+  min-width:92px!important;
+  flex-basis:92px!important;
+  width:92px!important;
+  height:54px!important;
+  padding:6px 10px!important;
+}
+body.city-mode #bottombar .tool-ico{font-size:19px!important;}
+body.city-mode #bottombar .tool-label{font-size:10.5px!important;letter-spacing:.02em!important;display:block!important;}
+body.city-mode #bottombar .speed-cluster .compact-action{min-width:56px!important;height:38px!important;font-size:13px!important;}
+
+body.city-mode #toolPanel.tool-panel{
+  left:84px!important;
+  right:auto!important;
+  bottom:84px!important;
+  top:auto!important;
+  width:min(480px,calc(100vw - 380px))!important;
+  max-width:min(480px,calc(100vw - 380px))!important;
+  max-height:250px!important;
+  overflow:hidden!important;
+  padding:12px!important;
+  border-radius:18px!important;
+}
+body.city-mode #toolPanel .tool-section.active,
+body.city-mode #toolPanel .classic-tool-section.active{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;
+  align-items:start!important;
+}
+body.city-mode #toolPanel .tool-section[data-tool-section="inspect"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="demolish"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="bus-line"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="bus-stop"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="upgrade"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="tmpe"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="terrain"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="transport"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="zone"].active,
+body.city-mode #toolPanel .tool-section[data-tool-section="rail"].active{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+body.city-mode #toolPanel .tool-section-title,
+body.city-mode #toolPanel .classic-subtitle{
+  grid-column:1 / -1!important;
+}
+body.city-mode #toolPanel .tool-hint,
+body.city-mode #toolPanel .tool-mini-stats,
+body.city-mode #toolPanel .inspector-text,
+body.city-mode #toolPanel .tmpe-summary,
+body.city-mode #toolPanel .tmpe-legend{
+  grid-column:1 / -1!important;
+}
+body.city-mode #toolPanel .classic-tool-group,
+body.city-mode #toolPanel .lane-class-panel,
+body.city-mode #toolPanel .tmpe-mode-buttons,
+body.city-mode #toolPanel .classic-group,
+body.city-mode #toolPanel .transit-actions,
+body.city-mode #toolPanel .terrain-brush-grid,
+body.city-mode #toolPanel #terrainBackGenerator{
+  width:auto!important;
+  min-width:0!important;
+  margin:0!important;
+}
+body.city-mode #toolPanel .classic-tool-group,
+body.city-mode #toolPanel .lane-class-panel,
+body.city-mode #toolPanel .classic-group{
+  padding:9px!important;
+  border-radius:12px!important;
+  background:rgba(255,255,255,.04)!important;
+  border:1px solid rgba(255,255,255,.085)!important;
+}
+body.city-mode #toolPanel button{
+  min-height:34px!important;
+  height:34px!important;
+  font-size:12px!important;
+  padding:0 10px!important;
+  border-radius:9px!important;
+  white-space:nowrap!important;
+}
+body.city-mode #toolPanel .classic-choice-grid,
+body.city-mode #toolPanel .classic-stepper,
+body.city-mode #toolPanel .classic-two-buttons,
+body.city-mode #toolPanel .tmpe-mode-buttons,
+body.city-mode #toolPanel .transit-actions,
+body.city-mode #toolPanel .lane-class-buttons,
+body.city-mode #toolPanel .tmpe-class-grid,
+body.city-mode #toolPanel .segmented.compact,
+body.city-mode #toolPanel .terrain-brush-grid{
+  display:grid!important;
+  gap:6px!important;
+}
+body.city-mode #toolPanel .road-main-presets{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .road-direction-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .road-elevation-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .lane-quick-buttons{grid-template-columns:repeat(5,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .speed-quick-buttons{grid-template-columns:repeat(4,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .road-extra-grid{grid-template-columns:1fr!important;}
+body.city-mode #toolPanel .road-zone-side-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .terrain-brush-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-column:1 / -1!important;}
+body.city-mode #toolPanel .tmpe-mode-buttons{grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-column:1 / -1!important;}
+body.city-mode #toolPanel .tmpe-class-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .segmented.compact{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+body.city-mode #toolPanel [data-tool-section="tmpe"] .segmented.compact:first-of-type{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+body.city-mode #toolPanel [data-tool-section="tmpe"] .segmented.compact:last-of-type{grid-template-columns:repeat(4,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .tool-panel-close{display:flex!important;align-items:center!important;justify-content:center!important;}
+body.city-mode #toolPanel .tool-hint{margin-top:0!important;}
+body.city-mode #toolPanel .tool-mini-stats{margin-top:0!important;}
+body.city-mode #toolPanel .lane-control{grid-column:span 1!important;}
+body.city-mode #toolPanel[data-active-tool="road"] .tool-hint,
+body.city-mode #toolPanel[data-active-tool="road"] .tool-mini-stats{display:none!important;}
+body.city-mode #toolPanel[data-active-tool="road"] .optional-advanced .tool-hint{display:block!important;}
+body.city-mode #toolPanel[data-active-tool="terrain"] .tool-hint{display:block!important;}
+
+.tn-minimap{left:auto!important;right:16px!important;bottom:84px!important;width:228px!important;z-index:18!important;}
+.tn-minimap canvas{width:212px!important;height:212px!important;}
+.tn-minimap-dock{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+.tn-minimap-dock button{height:32px!important;font-size:11px!important;padding:0 8px!important;}
+
+body.ui-collapsed #topbar,
+body.ui-collapsed #classicLeftPanel,
+body.ui-collapsed #toolPanel,
+body.ui-collapsed #bottombar,
+body.ui-collapsed .pill{display:none!important;}
+body.ui-collapsed .tn-minimap{display:block!important;right:16px!important;bottom:16px!important;}
+
+@media(max-width:1366px){
+  body.city-mode #toolPanel.tool-panel{width:min(460px,calc(100vw - 360px))!important;max-width:min(460px,calc(100vw - 360px))!important;}
+  body.city-mode #bottombar .tool-cluster button[data-tool]{min-width:84px!important;flex-basis:84px!important;width:84px!important;}
+}
+@media(max-width:1100px){
+  body.city-mode #toolPanel.tool-panel{left:10px!important;right:10px!important;width:auto!important;max-width:calc(100vw - 20px)!important;}
+  .tn-minimap{right:16px!important;bottom:148px!important;}
+}
+@media(max-width:920px){
+  body.city-mode #toolPanel.tool-panel{max-height:46vh!important;overflow:auto!important;}
+  body.city-mode #toolPanel .tool-section.active,body.city-mode #toolPanel .classic-tool-section.active{grid-template-columns:1fr!important;}
+  body.city-mode #bottombar .tool-cluster button[data-tool]{min-width:72px!important;flex-basis:72px!important;width:72px!important;height:50px!important;}
+  .tn-minimap{display:none!important;}
+}
+
+/* ===== v2.4.8 visual fix: minimapa, barra inferior e painel sem corte ===== */
+body.city-mode .tn-minimap{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  left:auto!important;
+  right:16px!important;
+  bottom:78px!important;
+  width:218px!important;
+  z-index:40!important;
+}
+body.city-mode .tn-minimap canvas{width:202px!important;height:202px!important;}
+body.city-mode .tn-minimap-dock{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+body.city-mode .tn-minimap-dock button{height:30px!important;font-size:11px!important;}
+
+body.city-mode #bottombar.classic-bottombar{
+  bottom:8px!important;
+  min-height:58px!important;
+  padding:6px!important;
+  gap:8px!important;
+  overflow:hidden!important;
+}
+body.city-mode #bottombar .speed-cluster{
+  gap:5px!important;
+  flex:0 0 auto!important;
+}
+body.city-mode #bottombar .speed-cluster .compact-action,
+body.city-mode #dayNightToggle.daynight-action{
+  min-width:48px!important;
+  width:48px!important;
+  height:34px!important;
+  padding:0 6px!important;
+  font-size:11px!important;
+  border-radius:9px!important;
+}
+body.city-mode #pauseGame.compact-action{width:58px!important;min-width:58px!important;}
+body.city-mode #bottombar .tool-cluster button[data-tool]{
+  min-width:82px!important;
+  width:82px!important;
+  flex-basis:82px!important;
+  height:48px!important;
+}
+body.city-mode #bottombar .tool-label{font-size:9.5px!important;}
+body.city-mode #bottombar .tool-ico{font-size:17px!important;}
+
+body.city-mode #toolPanel.tool-panel{
+  left:68px!important;
+  right:250px!important;
+  width:auto!important;
+  max-width:none!important;
+  bottom:72px!important;
+  max-height:none!important;
+  height:auto!important;
+  overflow:visible!important;
+  padding:10px!important;
+}
+body.city-mode #toolPanel .tool-panel-head{
+  display:flex!important;
+  align-items:center!important;
+  margin-bottom:6px!important;
+  min-height:24px!important;
+}
+body.city-mode #toolPanel .tool-panel-subtitle{display:none!important;}
+body.city-mode #toolPanel .tool-section.active,
+body.city-mode #toolPanel .classic-tool-section.active{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(118px,1fr))!important;
+  gap:7px!important;
+  align-items:start!important;
+}
+body.city-mode #toolPanel[data-active-tool="road"] .classic-subtitle,
+body.city-mode #toolPanel[data-active-tool="road"] .tool-section-title,
+body.city-mode #toolPanel[data-active-tool="road"] .tool-hint,
+body.city-mode #toolPanel[data-active-tool="road"] .tool-mini-stats,
+body.city-mode #toolPanel[data-active-tool="road"] .classic-level-readout,
+body.city-mode #toolPanel[data-active-tool="road"] .optional-advanced{display:none!important;}
+body.city-mode #toolPanel[data-active-tool="road"] .classic-tool-section.active{
+  grid-template-columns:1.25fr 1fr 1.35fr 1fr!important;
+}
+body.city-mode #toolPanel .classic-tool-group,
+body.city-mode #toolPanel .lane-class-panel,
+body.city-mode #toolPanel .classic-group{
+  padding:7px!important;
+  border-radius:11px!important;
+}
+body.city-mode #toolPanel .classic-tool-group>label,
+body.city-mode #toolPanel .zone-density-title{
+  font-size:9px!important;
+  margin-bottom:4px!important;
+}
+body.city-mode #toolPanel button{
+  height:31px!important;
+  min-height:31px!important;
+  padding:0 8px!important;
+  font-size:11px!important;
+  border-radius:8px!important;
+  text-overflow:ellipsis!important;
+  overflow:hidden!important;
+}
+body.city-mode #toolPanel .road-main-presets{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .lane-quick-buttons{grid-template-columns:repeat(5,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .speed-quick-buttons{grid-template-columns:repeat(4,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .road-extra-grid{grid-template-columns:repeat(1,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .road-zone-side-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+body.city-mode #toolPanel[data-active-tool="road"] .compact-road-options{min-width:0!important;}
+
+body.ui-collapsed .tn-minimap{display:block!important;right:16px!important;bottom:16px!important;}
+@media(max-width:1180px){
+  body.city-mode #toolPanel.tool-panel{left:10px!important;right:10px!important;bottom:70px!important;}
+  body.city-mode #toolPanel .tool-section.active,body.city-mode #toolPanel .classic-tool-section.active{grid-template-columns:repeat(3,minmax(110px,1fr))!important;}
+  body.city-mode .tn-minimap{display:none!important;}
+}
+
+/* ===== v2.4.11 — visual polish compacto ===== */
+body.city-mode .tn-minimap,
+body.city-mode .tn-minimap.hidden{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  left:auto!important;
+  right:12px!important;
+  bottom:76px!important;
+  width:178px!important;
+  z-index:80!important;
+  padding:6px!important;
+  border-radius:12px!important;
+}
+body.city-mode .tn-minimap-head{font-size:10px!important;margin-bottom:4px!important;}
+body.city-mode .tn-minimap-head b{font-size:10px!important;}
+body.city-mode .tn-minimap-head span{font-size:9px!important;}
+body.city-mode .tn-minimap canvas{width:166px!important;height:166px!important;border-radius:8px!important;}
+body.city-mode .tn-minimap-dock{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:4px!important;margin-top:5px!important;}
+body.city-mode .tn-minimap-dock button{height:24px!important;font-size:9px!important;padding:0 5px!important;border-radius:7px!important;}
+
+body.city-mode #bottombar.classic-bottombar{
+  min-height:48px!important;
+  height:54px!important;
+  padding:5px 7px!important;
+  gap:6px!important;
+}
+body.city-mode #bottombar .speed-cluster{gap:4px!important;}
+body.city-mode #bottombar .speed-cluster .compact-action,
+body.city-mode #dayNightToggle.daynight-action{
+  min-width:42px!important;
+  width:42px!important;
+  height:30px!important;
+  padding:0 4px!important;
+  font-size:10px!important;
+  border-radius:8px!important;
+}
+body.city-mode #pauseGame.compact-action{min-width:50px!important;width:50px!important;}
+body.city-mode #bottombar .tool-cluster{gap:5px!important;}
+body.city-mode #bottombar .tool-cluster button[data-tool]{
+  min-width:68px!important;
+  width:68px!important;
+  flex-basis:68px!important;
+  height:42px!important;
+  padding:3px 6px!important;
+  border-radius:10px!important;
+}
+body.city-mode #bottombar .tool-label{font-size:8.4px!important;line-height:1!important;}
+body.city-mode #bottombar .tool-ico{font-size:15px!important;}
+
+body.city-mode #toolPanel.tool-panel{
+  left:68px!important;
+  right:auto!important;
+  bottom:70px!important;
+  top:auto!important;
+  width:430px!important;
+  max-width:430px!important;
+  min-width:0!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  padding:8px!important;
+  border-radius:14px!important;
+  z-index:45!important;
+}
+body.city-mode #toolPanel .tool-panel-head{display:flex!important;align-items:center!important;margin-bottom:4px!important;min-height:20px!important;}
+body.city-mode #toolPanel .tool-panel-head .panel-title{font-size:10px!important;letter-spacing:.08em!important;}
+body.city-mode #toolPanel .tool-panel-close{width:24px!important;height:24px!important;border-radius:8px!important;font-size:11px!important;}
+body.city-mode #toolPanel .tool-panel-subtitle,
+body.city-mode #toolPanel .classic-subtitle,
+body.city-mode #toolPanel .tool-section-title,
+body.city-mode #toolPanel .tool-hint,
+body.city-mode #toolPanel .tool-mini-stats,
+body.city-mode #toolPanel .classic-level-readout,
+body.city-mode #toolPanel .classic-current,
+body.city-mode #toolPanel .optional-advanced{display:none!important;}
+body.city-mode #toolPanel .tool-section.active,
+body.city-mode #toolPanel .classic-tool-section.active,
+body.city-mode #toolPanel[data-active-tool="road"] .classic-tool-section.active{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:5px!important;
+  align-items:start!important;
+}
+body.city-mode #toolPanel .classic-tool-group,
+body.city-mode #toolPanel .lane-class-panel,
+body.city-mode #toolPanel .classic-group,
+body.city-mode #toolPanel .zone-density-wrap{
+  width:auto!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:5px!important;
+  border-radius:9px!important;
+  background:rgba(255,255,255,.035)!important;
+  border:1px solid rgba(255,255,255,.075)!important;
+}
+body.city-mode #toolPanel .classic-tool-group>label,
+body.city-mode #toolPanel .zone-density-title{
+  font-size:7.8px!important;
+  line-height:1!important;
+  margin-bottom:4px!important;
+  letter-spacing:.075em!important;
+}
+body.city-mode #toolPanel button{
+  height:24px!important;
+  min-height:24px!important;
+  padding:0 5px!important;
+  font-size:9px!important;
+  line-height:1!important;
+  border-radius:7px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+}
+body.city-mode #toolPanel .classic-choice-grid,
+body.city-mode #toolPanel .classic-stepper,
+body.city-mode #toolPanel .classic-two-buttons,
+body.city-mode #toolPanel .zone-buttons,
+body.city-mode #toolPanel .side-buttons,
+body.city-mode #toolPanel .zone-density-buttons,
+body.city-mode #toolPanel .terrain-brush-grid,
+body.city-mode #toolPanel .tmpe-mode-buttons,
+body.city-mode #toolPanel .transit-actions,
+body.city-mode #toolPanel .lane-class-buttons,
+body.city-mode #toolPanel .tmpe-class-grid,
+body.city-mode #toolPanel .segmented.compact{
+  display:grid!important;
+  gap:4px!important;
+}
+body.city-mode #toolPanel .road-main-presets{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .lane-quick-buttons{grid-template-columns:repeat(5,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .speed-quick-buttons{grid-template-columns:repeat(4,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .road-direction-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .road-elevation-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .road-extra-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .road-zone-side-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+body.city-mode #toolPanel[data-active-tool="road"] .compact-road-options{min-width:0!important;}
+body.city-mode #toolPanel .zone-buttons{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .zone-density-buttons{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+body.city-mode #toolPanel .terrain-brush-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;}
+
+@media(max-width:1180px){
+  body.city-mode #toolPanel.tool-panel{width:390px!important;max-width:calc(100vw - 24px)!important;left:10px!important;bottom:62px!important;}
+  body.city-mode #toolPanel .tool-section.active,body.city-mode #toolPanel .classic-tool-section.active{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  body.city-mode .tn-minimap,body.city-mode .tn-minimap.hidden{display:block!important;right:10px!important;bottom:118px!important;width:154px!important;}
+  body.city-mode .tn-minimap canvas{width:142px!important;height:142px!important;}
+}
+
+/* v2.4.12: minimapa legado funcional sempre visivel na cidade.
+   Usa #tnMinimap para vencer overrides antigos e media queries que escondiam .tn-minimap. */
+body.city-mode #tnMinimap.tn-minimap,
+body.city-mode #tnMinimap.tn-minimap.hidden{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:fixed!important;
+  left:auto!important;
+  top:auto!important;
+  right:16px!important;
+  bottom:84px!important;
+  width:228px!important;
+  z-index:80!important;
+  pointer-events:auto!important;
+  transform:none!important;
+}
+body.city-mode #tnMinimap canvas{
+  width:212px!important;
+  height:212px!important;
+}
+body.city-mode #tnMinimap .tn-minimap-dock{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+body.ui-collapsed #tnMinimap.tn-minimap,
+body.ui-collapsed #tnMinimap.tn-minimap.hidden{
+  display:block!important;
+  right:16px!important;
+  bottom:16px!important;
+}
+@media(max-width:1180px){
+  body.city-mode #tnMinimap.tn-minimap,
+  body.city-mode #tnMinimap.tn-minimap.hidden{
+    display:block!important;
+    right:10px!important;
+    bottom:118px!important;
+    width:164px!important;
+  }
+  body.city-mode #tnMinimap canvas{width:150px!important;height:150px!important;}
+}
+@media(max-width:920px){
+  body.city-mode #tnMinimap.tn-minimap,
+  body.city-mode #tnMinimap.tn-minimap.hidden{
+    display:block!important;
+    right:8px!important;
+    bottom:126px!important;
+    width:146px!important;
+  }
+  body.city-mode #tnMinimap canvas{width:132px!important;height:132px!important;}
+  body.city-mode #tnMinimap .tn-minimap-dock button{height:24px!important;font-size:9px!important;padding:0 4px!important;}
+}
+
+
+/* ===== v2.4.13 render focus: botões do minimapa realmente controlam UI e grade ===== */
+body.city-mode #tnMinimap.tn-minimap,
+body.city-mode #tnMinimap.tn-minimap.hidden{
+  display:block!important; visibility:visible!important; opacity:1!important; pointer-events:auto!important; z-index:120!important;
+}
+body.ui-collapsed #topbar,
+body.ui-collapsed #classicLeftPanel,
+body.ui-collapsed #toolPanel,
+body.ui-collapsed #bottombar,
+body.ui-collapsed .pill{display:none!important;}
+body.ui-collapsed #tnMinimap.tn-minimap{display:block!important;right:16px!important;bottom:16px!important;}
+
+
+/* v2.4.14 — UI colapsada realmente limpa a tela, mantendo só o botão Interface para restaurar. */
+body.city-mode.ui-collapsed .topbar,
+body.city-mode.ui-collapsed .bottombar,
+body.city-mode.ui-collapsed #classicLeftPanel,
+body.city-mode.ui-collapsed #toolPanel,
+body.city-mode.ui-collapsed .tn-info-dock,
+body.city-mode.ui-collapsed .tn-info-panel,
+body.city-mode.ui-collapsed .tmpe-panel,
+body.city-mode.ui-collapsed .pill{display:none!important}
+body.city-mode .tn-minimap.minimap-ui-collapsed{width:auto!important;min-width:104px!important;padding:6px!important;right:12px!important;bottom:16px!important}
+body.city-mode .tn-minimap.minimap-ui-collapsed .tn-minimap-head,
+body.city-mode .tn-minimap.minimap-ui-collapsed canvas,
+body.city-mode .tn-minimap.minimap-ui-collapsed [data-view-toggle]{display:none!important}
+body.city-mode .tn-minimap.minimap-ui-collapsed .tn-minimap-dock{display:block!important;margin:0!important}
+body.city-mode .tn-minimap.minimap-ui-collapsed [data-ui-toggle="ui"]{display:block!important;width:92px!important;height:30px!important}
+body.city-mode .tn-minimap,
+body.city-mode .newcore-minimap{display:block!important;visibility:visible!important;opacity:1!important}
+body.city-mode.ui-collapsed .tn-minimap.minimap-ui-collapsed{display:block!important;visibility:visible!important;opacity:1!important}

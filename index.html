@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Terra Nova - NewCore v2.4.20 Crosswalk Building Scale Hotfix 5m</title>
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="./styles/newcore.css?v=2.4.20" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./vendor/three.module.js",
+      "three/addons/": "./vendor/"
+    }
+  }
+  </script>
+</head>
+<body class="start-mode">
+
+    <section id="startScreen" class="start-screen" aria-label="Tela inicial Terra Nova">
+    <div class="start-card classic-start-card">
+      <div class="start-kicker">SIMURB / Terra Nova</div>
+      <h1>Novo Jogo</h1>
+      <p>Fluxo clássico separado: escolha o mapa, gere o terreno e só depois entra na cidade com as ferramentas.</p>
+      <div class="start-actions classic-start-actions">
+        <button id="openGenerator" class="primary-start">Novo mapa</button>
+        <button id="quickStartCity">Cidade rápida</button>
+        <button id="loadGameFromStart">Carregar JSON</button>
+      </div>
+      <div class="start-menu-hint">
+        <b>Fluxo:</b> Novo Jogo → Gerador de Mapas → Cidade. A interface do gerador não mistura com a HUD da cidade.
+      </div>
+      <div class="start-meta">v2.4.20 • Hotfix: zebras/linhas de parada e escala das construções</div>
+    </div>
+  </section>
+
+<header id="topbar" class="topbar">
+    <button id="hambMenu" class="hamb-top" title="Menu">☰</button>
+    <div class="brand">
+      <strong>Terra Nova</strong>
+      <span>NewCore v2.4.20 Crosswalk Building Scale Hotfix 5m</span>
+    </div>
+    <div class="hud-pill"><b>Data</b><span id="newcoreDate">01/01/2040</span></div>
+    <div class="hud-pill"><b>Clima</b><span id="newcoreWeather">☀ 34°C</span></div>
+    <div class="hud-pill"><b>Modo</b><span id="newcoreMode">Gerador</span></div>
+    <button id="gameModeToggle" class="hud-pill mode-toggle" title="Alternar Sandbox/SimulaÃ§Ã£o"><b>Jogo</b><span id="newcoreGameMode">Sandbox</span></button>
+    <div class="hud-pill"><b>Dinheiro</b><span id="newcoreMoney">R$ 250.000</span></div>
+    <div class="hud-pill"><b>Saldo/h</b><span id="newcoreNetIncomeTop">R$ 0</span></div>
+    <div class="hud-pill"><b>Pop.</b><span id="newcorePop">0</span></div>
+    <div class="hud-pill"><b>Empregos</b><span id="newcoreJobs">0</span></div>
+    <div class="hud-pill"><b>Pass/h</b><span id="newcorePax">0</span></div>
+    <div class="hud-pill"><b>Veículos</b><span id="newcoreVehicles">0</span></div>
+    <div class="hud-pill"><b>Cong.</b><span id="newcoreCongestion">0%</span></div>
+    <div class="hud-pill"><b>Eventos</b><span id="newcoreEvents">0</span></div>
+    <div class="hud-pill"><b>Tempo</b><span id="newcoreClock">D1 06:00</span></div>
+    <div class="hud-pill"><b>Área jogável</b><span id="newcoreBuildable">--</span></div>
+    <div class="hud-pill"><b>Packs 3D</b><span id="newcoreAssetPacks">0</span></div>
+  </header>
+
+  <div id="hamburgerMenu" class="classic-menu hidden" aria-label="Menu principal">
+    <button id="menuNewMap">Novo mapa</button>
+    <button id="menuSaveGame">Salvar JSON</button>
+    <button id="menuLoadGame">Carregar JSON</button>
+    <button id="menuClearCity">Limpar cidade</button>
+    <button id="menuBackStart">Voltar ao Novo Jogo</button>
+  </div>
+
+  <div id="ui">
+    <div class="head">
+      <div class="title">Gerador de Mapas<span>Terra Nova low-poly procedural v2.4.20 -> NewCore</span></div>
+      <button id="collapse" class="iconbtn" title="Recolher interface">—</button>
+    </div>
+    <div class="body">
+      <div class="seedline"><input id="seed" inputmode="numeric" value="1905502357" /><button id="randomSeed">Seed nova</button></div>
+      <div class="mapsize"><b>Tamanho do mapa</b><div class="sizebuttons"><button class="sizebtn" data-size="10">10×10 km</button><button class="sizebtn active" data-size="20">20×20 km</button><button class="sizebtn" data-size="30">30×30 km</button></div></div>
+      <div class="row"><label>Montanhas / serras</label><output id="mountainsOut"></output><input type="range" min="0" max="100" value="72" id="mountains"></div>
+      <div class="row"><label>Rios e córregos</label><output id="riversOut"></output><input type="range" min="0" max="100" value="78" id="rivers"></div>
+      <div class="row"><label>Litoral / praias</label><output id="coastOut"></output><input type="range" min="0" max="100" value="62" id="coast"></div>
+      <div class="row"><label>Planícies jogáveis</label><output id="plainsOut"></output><input type="range" min="0" max="100" value="56" id="plains"></div>
+      <div class="row"><label>Rugosidade do relevo</label><output id="roughnessOut"></output><input type="range" min="0" max="100" value="54" id="roughness"></div>
+      <div class="row"><label>Florestas</label><output id="forestOut"></output><input type="range" min="0" max="100" value="70" id="forest"></div>
+      <div class="row"><label>Rochas de montanha</label><output id="rocksOut"></output><input type="range" min="0" max="100" value="82" id="rocks"></div>
+      <div class="row"><label>Micro detalhes</label><output id="detailsOut"></output><input type="range" min="0" max="100" value="74" id="details"></div>
+      <div class="actions"><button class="primary" id="generate">Gerar mapa</button><button id="reset">Reset aprovado</button><button id="exportCfg">Copiar config</button><button id="backToStartFromGenerator">Voltar</button></div>
+      <button class="start-city" id="startCity">Iniciar cidade neste mapa</button>
+      <div class="switches">
+        <label><input type="checkbox" id="showTrees" checked> árvores</label>
+        <label><input type="checkbox" id="showRocks" checked> rochas</label>
+        <label><input type="checkbox" id="showDetails" checked> detalhes</label>
+        <label><input type="checkbox" id="showFog" checked> névoa</label>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>Área jogável</b><span id="statBuild">--</span></div>
+        <div class="stat"><b>Altitude</b><span id="statAlt">--</span></div>
+        <div class="stat"><b>Rios ativos</b><span id="statRivers">--</span></div>
+        <div class="stat"><b>Objetos</b><span id="statObjects">--</span></div>
+      </div>
+      <div class="hint">Base nova: o gerador é o host. v2.4.7 etapa 3 reforça UI sem rolagem, minimapa no canto direito, cruzamentos mais corretos, ramps de elevados e animação mais rápida.</div>
+    </div>
+  </div>
+
+
+  <aside id="classicLeftPanel" class="classic-left-panel panel" aria-label="Painéis da cidade">
+    <nav class="classic-tabs">
+      <button data-classic-panel="reports" class="active">Relatórios</button>
+      <button data-classic-panel="lines">Linhas</button>
+      <button data-classic-panel="economy">Economia</button>
+      <button data-classic-panel="traffic">Tráfego</button>
+      <button data-classic-panel="population">População</button>
+      <button data-classic-panel="transport">Transporte</button>
+      <button data-classic-panel="graphs">Gráficos</button>
+    </nav>
+    <div id="classicPanelBody" class="classic-panel-body"></div>
+  </aside>
+
+  <section id="toolPanel" class="tool-panel panel" aria-label="Submenus de ferramentas">
+    <div class="tool-panel-head">
+      <div>
+        <div class="panel-title" id="toolPanelTitle">Ferramentas</div>
+        <div class="tool-panel-subtitle" id="toolPanelSubtitle">Escolha uma ferramenta na barra inferior.</div>
+      </div>
+      <button class="tool-panel-close" id="toolPanelCancel" title="Cancelar ferramenta">×</button>
+    </div>
+
+    <div class="tool-section active" data-tool-section="none">
+      <div class="tool-empty-icon">🧰</div>
+      <b>Sem ferramenta ativa</b>
+      <p>Use a barra inferior como na UI antiga: selecione uma ferramenta e o submenu abre acima da barra inferior.</p>
+      <div class="tool-hint">ESC cancela a ferramenta. WASD move câmera, botão direito gira; scroll inclina.</div>
+    </div>
+
+    <div class="tool-section classic-tool-section" data-tool-section="road">
+      <div class="tool-section-title">Estradas</div>
+      <div class="classic-subtitle">Escolha o tipo, clique no mapa para iniciar e clique de novo para finalizar a via.</div>
+
+      <div class="classic-tool-group">
+        <label>Tipo de via</label>
+        <div class="classic-choice-grid road-main-presets road-main-presets-v247">
+          <button data-road-preset="dirt">🌱 Terra</button>
+          <button data-road-preset="street-main">🛣️ Rua 2 mão</button>
+          <button data-road-preset="avenue">🌳 Avenida</button>
+          <button data-road-preset="oneway">➡️ 1 mão</button>
+        </div>
+      </div>
+
+      <div class="classic-tool-group compact-road-options">
+        <label>Faixas</label>
+        <div class="classic-stepper lane-quick-buttons">
+          <button data-road-lanes="1">1</button>
+          <button data-road-lanes="2">2</button>
+          <button data-road-lanes="3">3</button>
+          <button data-road-lanes="4">4</button>
+          <button data-road-lanes="5">5</button>
+        </div>
+        <input id="laneCount" class="hidden-control" type="range" min="1" max="5" value="2">
+        <span class="classic-current">Atual: <b id="laneCountOut">2</b></span>
+      </div>
+
+      <div class="classic-tool-group">
+        <label>Velocidade</label>
+        <div class="classic-stepper speed-quick-buttons">
+          <button data-road-speed="30">30</button>
+          <button data-road-speed="40">40</button>
+          <button data-road-speed="50">50</button>
+          <button data-road-speed="60">60</button>
+          <button data-road-speed="80">80</button>
+          <button data-road-speed="100">100</button>
+          <button data-road-speed="120">120</button>
+        </div>
+        <input id="roadSpeed" class="hidden-control" type="range" min="30" max="120" step="10" value="50">
+        <span class="classic-current">Atual: <b id="roadSpeedOut">50</b> km/h</span>
+      </div>
+
+      <div class="classic-tool-group">
+        <label>Desenho</label>
+        <div class="geometry-buttons classic-two-buttons">
+          <button data-road-geometry="smooth">Curva</button>
+          <button data-road-geometry="straight">Reta</button>
+        </div>
+      </div>
+
+      <div class="classic-tool-group">
+        <label>Fluxo</label>
+        <div class="classic-stepper road-direction-grid">
+          <button data-road-direction="twoWay">Mão dupla</button>
+          <button data-road-direction="oneWay">Mão única</button>
+        </div>
+      </div>
+
+      <div class="classic-tool-group">
+        <label>Nível da via</label>
+        <div class="classic-stepper road-elevation-grid">
+          <button data-road-elevation="0">Solo</button>
+          <button data-road-elevation="1">Elevado</button>
+          <button data-road-elevation="-1">Túnel</button>
+        </div>
+      </div>
+
+      <div class="classic-tool-group">
+        <label>Extras</label>
+        <div class="classic-stepper road-extra-grid">
+          <button data-road-toggle="roadSnap">Snap</button>
+          <button data-road-toggle="roadZoneEdges">Zonas</button>
+          <button data-road-toggle="roadParkingAllowed">Estac.</button>
+        </div>
+      </div>
+
+      <div class="classic-tool-group">
+        <label>Lado zoneável</label>
+        <div class="classic-stepper road-zone-side-grid">
+          <button data-road-zone-side="both">2 lados</button>
+          <button data-road-zone-side="left">Esq.</button>
+          <button data-road-zone-side="right">Direita</button>
+        </div>
+      </div>
+
+      <div class="classic-tool-group optional-advanced classic-muted-note">
+        <label>Classes avançadas</label>
+        <div class="tool-hint">Configurações avançadas de faixas e edição ficam dentro do <b>TMPE</b>.</div>
+        <span class="classic-current hidden"><b id="roadLaneClassOut">geral</b></span>
+      </div>
+
+      <div class="classic-level-readout">Nível atual: <b id="roadLevelOut">0</b> <span>PageUp/PageDown</span></div>
+      <div class="tool-hint">Fluxo: escolha o preset, clique para iniciar a via e clique no destino. PageUp/PageDown muda o nível.</div>
+    </div>
+
+    <div class="tool-section classic-tool-section" data-tool-section="rail">
+      <div class="tool-section-title">Trilhos</div>
+      <div class="classic-subtitle">Trilho simples ou duplo, depois clique no mapa para desenhar.</div>
+
+      <div class="classic-tool-group">
+        <label>Via férrea</label>
+        <div class="classic-choice-grid rail-main-presets">
+          <button data-rail-preset="single">Simples</button>
+          <button data-rail-preset="double">Duplo</button>
+        </div>
+      </div>
+
+      <div class="classic-tool-group">
+        <label>Operação</label>
+        <div class="classic-choice-grid rail-system-presets">
+          <button data-rail-preset="train">Trem</button>
+          <button data-rail-preset="vlt">VLT</button>
+          <button data-rail-preset="metro">Metrô</button>
+        </div>
+      </div>
+
+      <div class="classic-tool-group">
+        <label>Desenho</label>
+        <div class="geometry-buttons classic-two-buttons">
+          <button data-rail-geometry="smooth">Curva</button>
+          <button data-rail-geometry="straight">Reta</button>
+        </div>
+      </div>
+
+      <div class="classic-tool-group">
+        <label>Velocidade</label>
+        <div class="classic-stepper rail-speed-buttons">
+          <button data-rail-speed="40">40</button>
+          <button data-rail-speed="60">60</button>
+          <button data-rail-speed="90">90</button>
+          <button data-rail-speed="120">120</button>
+          <button data-rail-speed="160">160</button>
+        </div>
+        <input id="railSpeed" class="hidden-control" type="range" min="40" max="160" step="10" value="90">
+        <span class="classic-current">Atual: <b id="railSpeedOut">90</b> km/h</span>
+      </div>
+
+      <div class="classic-level-readout">Nível atual: <b id="railLevelOut">0</b> <span>PageUp/PageDown</span></div>
+      <div class="tool-hint">Clique para iniciar o trilho e clique no destino. Use estações depois para criar linhas.</div>
+      <div class="tool-mini-stats">
+        <div><b>Segmentos</b><span id="toolRailSegments">0</span></div>
+        <div><b>Estações</b><span id="toolRailStations">0</span></div>
+      </div>
+    </div>
+
+    <div class="tool-section" data-tool-section="rail-station">
+      <div class="tool-section-title">Estação ferroviária</div>
+      <div class="tool-hint">Clique sobre um trilho em nível compatível para posicionar estação. Depois use Linha trilho para conectar estações.</div>
+      <div class="tool-mini-stats">
+        <div><b>Estações</b><span id="newcoreRailStations">0</span></div>
+        <div><b>Linhas</b><span id="newcoreRailLines">0</span></div>
+      </div>
+    </div>
+
+    <div class="tool-section" data-tool-section="rail-line">
+      <div class="tool-section-title">Linha de trilho</div>
+      <div class="transit-actions">
+        <button id="autoRailLine">Auto linha trilho</button>
+        <button id="finishRailLine">Concluir trilho</button>
+        <button id="clearRailDraft">Limpar rascunho trilho</button>
+      </div>
+      <div class="tool-hint">Clique nas estações em sequência. Enter conclui a linha em loop.</div>
+      <div class="tool-mini-stats">
+        <div><b>Lotação rail</b><span id="newcoreRailOccupancy">0%</span></div>
+        <div><b>Linhas</b><span id="toolRailLinesMirror">0</span></div>
+      </div>
+    </div>
+
+    <div class="tool-section" data-tool-section="zone">
+      <div class="tool-section-title">Zoneamento</div>
+      <div class="classic-subtitle">Pinte os lotes translúcidos que aparecem alinhados às ruas.</div>
+      <div class="zone-buttons">
+        <button data-zone-type="residential">🏠 Residencial</button>
+        <button data-zone-type="commercial">🏪 Comercial</button>
+        <button data-zone-type="industrial">🏭 Industrial</button>
+      </div>
+      <div class="zone-density-wrap">
+        <div class="zone-density-title">Densidade</div>
+        <div class="zone-density-buttons" id="zoneDensityButtons">
+          <button data-zone-density="low">Baixa</button>
+          <button data-zone-density="medium">Média</button>
+          <button data-zone-density="high">Alta</button>
+        </div>
+        <div class="zone-density-hint" id="zoneDensityHint">Densidade ativa: baixa.</div>
+      </div>
+      <div class="side-buttons">
+        <button data-zone-side="both">2 lados</button>
+        <button data-zone-side="left">esq.</button>
+        <button data-zone-side="right">dir.</button>
+      </div>
+      <div class="tool-hint">Clique/arraste sobre a grade encostada à rua. Lotes maiores ocupam mais células e a frente da construção aponta para a via mais próxima.</div>
+      <div class="tool-mini-stats">
+        <div><b>Lotes</b><span id="newcoreLots">0</span></div>
+        <div><b>Construções</b><span id="newcoreBuildings">0</span></div>
+        <div><b>RCI R/C/I</b><span id="newcoreRCI">--</span></div>
+        <div><b>Satisfação</b><span id="newcoreSatisfaction">--</span></div>
+      </div>
+    </div>
+
+
+    <div class="tool-section" data-tool-section="transport">
+      <div class="tool-section-title">Transporte</div>
+      <div class="classic-subtitle">Atalhos rápidos para montar transporte público.</div>
+      <div class="tool-choice-grid">
+        <button data-subtool="bus-stop">🚏 Parada bus</button>
+        <button data-subtool="bus-line">🚌 Linha bus</button>
+        <button data-subtool="rail-station">🚉 Estação</button>
+        <button data-subtool="rail-line">🧭 Linha trilho</button>
+      </div>
+      <div class="tool-hint">Use essa categoria como no jogo antigo: transporte concentra paradas, estações e linhas.</div>
+      <div class="tool-mini-stats">
+        <div><b>Paradas</b><span id="classicTransportStops">0</span></div>
+        <div><b>Linhas</b><span id="classicTransportLines">0</span></div>
+      </div>
+    </div>
+
+    <div class="tool-section" data-tool-section="terrain">
+      <div class="tool-section-title">Terreno</div>
+      <div class="classic-subtitle">Pincéis rápidos no mapa atual.</div>
+      <div class="terrain-brush-grid">
+        <button data-terrain-brush="trees">🌳 Árvores</button>
+        <button data-terrain-brush="rocks">🪨 Rochas</button>
+        <button data-terrain-brush="grass">🌿 Grama</button>
+        <button data-terrain-brush="dirt">🟫 Terra</button>
+        <button data-terrain-brush="gravel">⬚ Cascalho</button>
+        <button data-terrain-brush="clear">🧹 Limpar</button>
+        <button data-terrain-brush="flatten">▰ Nivelar</button>
+        <button data-terrain-brush="raise">⬆ Aterrar</button>
+        <button data-terrain-brush="lower">⬇ Rebaixar</button>
+      </div>
+      <div class="tool-hint">Clique ou arraste no terreno. A etapa atual cria/limpa props e texturas visuais; terraforming físico completo fica para a próxima rodada pesada.</div>
+      <button id="terrainBackGenerator" class="tmpe-clear">Voltar ao gerador de mapas</button>
+    </div>
+
+    <div class="tool-section" data-tool-section="bus-stop">
+      <div class="tool-section-title">Parada de ônibus</div>
+      <div class="tool-hint">Clique sobre uma via que permita ônibus. Paradas alimentam cobertura de transporte e demanda RCI.</div>
+      <div class="tool-mini-stats">
+        <div><b>Paradas</b><span id="newcoreStops">0</span></div>
+        <div><b>Cobertura</b><span id="newcoreTransitCoverage">0%</span></div>
+      </div>
+    </div>
+
+    <div class="tool-section" data-tool-section="bus-line">
+      <div class="tool-section-title">Linha de ônibus</div>
+      <div class="transit-actions">
+        <button id="autoBusLine">Auto linha ônibus</button>
+        <button id="finishBusLine">Concluir linha</button>
+        <button id="clearBusDraft">Limpar rascunho bus</button>
+      </div>
+      <div class="tool-hint">Clique nas paradas em sequência. Enter conclui a linha em loop.</div>
+      <div class="tool-mini-stats">
+        <div><b>Linhas bus</b><span id="newcoreBusLines">0</span></div>
+        <div><b>Lotação</b><span id="newcoreTransitOccupancy">0%</span></div>
+        <div><b>Modal car/TP/bike</b><span id="newcoreModalShare">--</span></div>
+        <div><b>Conforto TP</b><span id="newcoreComfortPenalty">0%</span></div>
+      </div>
+    </div>
+
+    <div class="tool-section" data-tool-section="upgrade">
+      <div class="tool-section-title">Editar via</div>
+      <div class="classic-subtitle">Configure aqui e clique numa via existente para aplicar.</div>
+      <div class="direction-buttons">
+        <button data-road-direction="twoWay">mão dupla</button>
+        <button data-road-direction="oneWay">mão única</button>
+      </div>
+      <label class="lane-control">Faixas <input id="upgradeLaneCount" type="range" min="1" max="5" value="2"><span id="upgradeLaneCountOut">2</span></label>
+      <label class="lane-control">Veloc. <input id="upgradeRoadSpeed" type="range" min="30" max="120" step="10" value="50"><span id="upgradeRoadSpeedOut">50</span></label>
+      <div class="lane-class-panel">
+        <b>Nova classe do segmento</b>
+        <div class="lane-class-buttons">
+          <button data-road-lane-class="general">geral</button>
+          <button data-road-lane-class="bus">ônibus</button>
+          <button data-road-lane-class="emergency">emerg.</button>
+          <button data-road-lane-class="service">serviço</button>
+          <button data-road-lane-class="mixed">mista</button>
+          <button data-road-lane-class="bike">bike</button>
+          <button data-road-lane-class="parking">estac.</button>
+        </div>
+      </div>
+      <div class="tool-hint">Clique numa via existente para aplicar configuração atual. Bom para trocar faixas, velocidade e classe do segmento.</div>
+    </div>
+
+    <div class="tool-section" data-tool-section="tmpe" id="tmpePanel">
+      <div class="tool-section-title">TMPE / Tráfego</div>
+      <div class="classic-subtitle">Controles de cruzamento e permissão por faixa.</div>
+      <div class="tmpe-mode-buttons">
+        <button data-tmpe-mode="signals">🚦 Cruzamentos</button>
+        <button data-tmpe-mode="phases">⏱️ Fases</button>
+        <button data-tmpe-mode="connectors">🔀 Conectores</button>
+        <button data-tmpe-mode="priority">⛔ Prioridade</button>
+        <button data-tmpe-mode="permissions">🛣️ Faixas</button>
+        <button id="tmpeOpenUpgrade">🧭 Editar via</button>
+      </div>
+      <div class="tmpe-legend">
+        <div><span class="lg lg-sig"></span>Semáforo</div>
+        <div><span class="lg lg-stop"></span>Pare (parada obrigatória)</div>
+        <div><span class="lg lg-yield"></span>Preferencial</div>
+      </div>
+      <div class="classic-group tmpe-lane-selector">
+        <span class="classic-label">Alvo da classe</span>
+        <div class="segmented compact">
+          <button data-tmpe-lane="-1">Tudo</button>
+          <button data-tmpe-lane="0">F1</button>
+          <button data-tmpe-lane="1">F2</button>
+          <button data-tmpe-lane="2">F3</button>
+          <button data-tmpe-lane="3">F4</button>
+          <button data-tmpe-lane="4">F5</button>
+        </div>
+      </div>
+      <div class="classic-group tmpe-class-selector">
+        <span class="classic-label">Classe aplicada</span>
+        <div class="segmented compact tmpe-class-grid">
+          <button data-tmpe-class="general">Geral</button>
+          <button data-tmpe-class="bus">Ônibus</button>
+          <button data-tmpe-class="emergency">Emerg.</button>
+          <button data-tmpe-class="service">Serv.</button>
+          <button data-tmpe-class="mixed">Mista</button>
+          <button data-tmpe-class="bike">Bike</button>
+          <button data-tmpe-class="parking">Estac.</button>
+        </div>
+      </div>
+      <div id="tmpeHint" class="tool-hint">Modo cruzamentos: clique perto de um nó para alternar sem controle → semáforo → pare → preferencial.</div>
+      <div class="tmpe-summary tool-mini-stats">
+        <div><b>Semáforos</b><span id="tmpeSignals">0</span></div>
+        <div><b>Pare/Pref.</b><span id="tmpePriority">0</span></div>
+        <div><b>Classes segmento</b><span id="tmpeRestrictions">0</span></div>
+        <div><b>Fases manuais</b><span id="tmpePhases">0</span></div>
+        <div><b>Conectores</b><span id="tmpeConnectors">0</span></div>
+      </div>
+      <button id="tmpeClear" class="tmpe-clear">Limpar todos os controles</button>
+    </div>
+
+    <div class="tool-section" data-tool-section="demolish">
+      <div class="tool-section-title">Demolir</div>
+      <div class="classic-subtitle">Remoção rápida. Clique no item para apagar.</div>
+      <div class="tool-hint danger-hint">Clique em via, trilho, lote ou zona para remover. Não tem confirmação por clique.</div>
+      <button id="clearCityInside" class="tmpe-clear danger-action">Limpar cidade inteira</button>
+    </div>
+
+    <div class="tool-section" data-tool-section="inspect">
+      <div class="tool-section-title">Inspecionar</div>
+      <div class="classic-subtitle">Clique no mapa para ver detalhes do item.</div>
+      <div class="tool-hint">Clique no terreno, lote, prédio, via, trilho, parada ou estação para ver dados aqui embaixo.</div>
+      <div class="tool-mini-stats">
+        <div><b>Valor solo</b><span id="newcoreLandValue">--</span></div>
+        <div><b>Desemprego</b><span id="newcoreUnemployment">0%</span></div>
+        <div><b>Impostos/h</b><span id="newcoreTaxIncome">R$ 0</span></div>
+        <div><b>Saldo/h</b><span id="newcoreNetIncome">R$ 0</span></div>
+      </div>
+    </div>
+
+    <div id="inspectorText" class="inspector-text">Nada selecionado.</div>
+  </section>
+
+  <nav id="bottombar" class="bottombar classic-bottombar" aria-label="Ferramentas principais">
+    <div class="speed-cluster">
+      <button id="pauseGame" class="compact-action">Pausar</button>
+      <button id="dayNightToggle" class="compact-action daynight-action" title="Liga/desliga ciclo dia/noite; desligado trava luz em 12h">Ciclo</button>
+      <button data-speed="1" class="compact-action">1×</button>
+      <button data-speed="3" class="compact-action">3×</button>
+      <button data-speed="5" class="compact-action">5×</button>
+    </div>
+    <div class="tool-cluster">
+      <button data-tool="inspect" disabled title="Inspecionar"><span class="tool-ico">🔎</span><span class="tool-label">Inspecionar</span></button>
+      <button data-tool="road" disabled title="Estradas"><span class="tool-ico">🛣️</span><span class="tool-label">Estradas</span></button>
+      <button data-tool="rail" disabled title="Trilhos"><span class="tool-ico">🚆</span><span class="tool-label">Trilhos</span></button>
+      <button data-tool="transport" disabled title="Transporte"><span class="tool-ico">🚌</span><span class="tool-label">Transporte</span></button>
+      <button data-tool="zone" disabled title="Zoneamento"><span class="tool-ico">🏘️</span><span class="tool-label">Zoneamento</span></button>
+      <button data-tool="terrain" disabled title="Terreno"><span class="tool-ico">⛰️</span><span class="tool-label">Terreno</span></button>
+      <button data-tool="demolish" disabled title="Demolir"><span class="tool-ico">🧨</span><span class="tool-label">Demolir</span></button>
+      <button data-tool="tmpe" disabled title="TMPE"><span class="tool-ico">🚦</span><span class="tool-label">TMPE</span></button>
+    </div>
+    <div class="save-cluster"></div>
+  </nav>
+
+  <div id="toast" class="toast"></div>
+  <div class="pill">Chrome desktop • WebGL local • NewCore modular v2.4.20</div>
+
+  <script type="module" src="./src/main.js?v=2.4.20"></script>
+</body>
+</html>

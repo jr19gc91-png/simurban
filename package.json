@@ -1,0 +1,13 @@
+{
+  "name": "terranova-newcore-v2420-tmpe-connectors-phases-priority-5m",
+  "version": "2.4.20",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "serve": "python -m http.server 8123 --bind 127.0.0.1",
+    "check": "node tools/check-js.mjs",
+    "audit": "node tools/audit-modules.mjs",
+    "smoke": "node tools/smoke-newcore.mjs",
+    "start:bazzite": "bash iniciar-terra-nova-bazzite.sh"
+  }
+}
